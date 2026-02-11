@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clima Uruguay</title>
+
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+    }
+    header {
+      background: linear-gradient(to right, #2980b9, #6dd5fa);
+      color: white;
+      padding: 100px 0;
+    }
+    header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+    }
+    #widget-sections section {
+      margin-bottom: 30px;
+    }
+    footer {
+      background-color: #222;
+      color: #ccc;
+      padding: 20px 0;
+      text-align: center;
+    }
+    
+    /* --- ESTILOS DEL FILTRO --- */
+    #location-filter {
+        padding: 2rem 0;
+        background-color: #f8f9fa;
+    }
+    #location-selector {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        max-width: 400px;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .widget-wrapper {
+        display: none; /* Oculto por defecto hasta que JS filtre */
+    }
+
+    /* Estilo para el contenedor del mapa general */
+    .general-map-container {
+        padding: 20px 0;
+        background-color: #fff;
+    }
+    .general-map-container iframe {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#"><i class="fa-solid fa-sun"></i> Tiempo</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a class="nav-link" href="#home">Inicio</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="text-center" id="home">
+  <div class="container">
+    <h1>El estado del tiempo según <strong>Dr. Pachulo</strong></h1>
+    <p class="lead">Una panoplia de estados del tiempo en Uruguay</p>
+    <a href="#location-filter" class="btn btn-light btn-lg mt-4">Ver Pronósticos</a>
+  </div>
+</header>
+
+<div class="container text-center general-map-container">
+    <h3 class="mb-3">Mapa General de Viento y Temperatura</h3>
+    <iframe width="650" height="450" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricTemp=default&metricWind=default&zoom=7&overlay=temp&product=ecmwf&level=surface&lat=-35.631&lon=-55.964&detailLat=-34.826&detailLon=-55.959&detail=true" frameborder="0"></iframe>
+</div>
+
+<div id="location-filter" class="text-center">
+    <div class="container">
+        <h2>Selecciona una Ubicación</h2>
+        <select id="location-selector" class="form-control">
+            <option value="todos">-- Mostrar Todas --</option>
+            <option value="solymar" selected>Solymar</option>
+            <option value="montevideo">Montevideo</option>
+        </select>
+    </div>
+</div>
+
+<div id="widget-sections" class="container py-5">
+  <div class="row">
+    
+    <div class="col-md-12 mb-4 widget-wrapper" data-location="solymar">
+        <h4 class="text-center">Windguru (Solymar)</h4>
+        <script id="wg_fwdg_313166_100_1757084432549">
+(function (window, document) {
+  var loader = function () {
+    var arg = ["s=313166" ,"m=100","uid=wg_fwdg_313166_100_1757084432549" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"idbs=1" ,"p=WINDSPD,TMPE,WCHILL,TCDC,APCP1s,SLP,RH"];
+    var script = document.createElement("script");
+    var tag = document.getElementsByTagName("script")[0];
+    script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
+    tag.parentNode.insertBefore(script, tag);
+  };
+  window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+})(window, document);
+</script>
+    </div>
+
+    <div class="col-md-12 mb-4 widget-wrapper" data-location="solymar montevideo">
+        <h4 class="text-center">Windguru (Montevideo)</h4>
+        <script id="wg_fwdg_1253312_100_1757084596073">
+(function (window, document) {
+  var loader = function () {
+    var arg = ["s=1253312" ,"m=100","uid=wg_fwdg_1253312_100_1757084596073" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"idbs=1" ,"p=WINDSPD,TMPE,WCHILL,TCDC,APCP1s,SLP,RH"];
+    var script = document.createElement("script");
+    var tag = document.getElementsByTagName("script")[0];
+    script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
+    tag.parentNode.insertBefore(script, tag);
+  };
+  window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+})(window, document);
+</script>
+    </div>
+
+    <div class="col-md-12 mb-4 widget-wrapper" data-location="solymar montevideo">
+        <h4 class="text-center">Mapa de Viento (Detalle)</h4>
+        <iframe width="100%" height="300" src="https://embed.windy.com/embed.html?type=forecast&location=coordinates&detail=true&detailLat=-34.82726583246643&detailLon=-55.98551167620765&metricTemp=default&metricRain=default&metricWind=default" frameborder="0"></iframe>
+    </div>
+    
+    <div class="col-md-12 widget-wrapper" data-location="solymar montevideo">
+        <h4 class="text-center">Pronóstico Extendido (Forecast7)</h4>
+        <a class="weatherwidget-io" href="https://forecast7.com/en/n34d90n56d16/montevideo/" data-label_1="URUGUAY" data-label_2="PRONOSTICO" data-theme="clear">MONTEVIDEO WEATHER</a>
+        <script>
+          !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+        </script>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 Clima Uruguay. Desarrollado por Dr. Pachulo con amor y nubes.</p>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selector = document.getElementById('location-selector');
+        const widgets = document.querySelectorAll('.widget-wrapper');
+
+        function filterWidgets() {
+            const selectedLocation = selector.value;
+            widgets.forEach(widget => {
+                // Obtenemos las ubicaciones asignadas al widget (separadas por espacio)
+                const locations = widget.getAttribute('data-location').split(' ');
+                
+                // Mostramos si es 'todos' O si la ubicación seleccionada está incluida en la lista del widget
+                if (selectedLocation === 'todos' || locations.includes(selectedLocation)) {
+                    widget.style.display = 'block';
+                } else {
+                    widget.style.display = 'none';
+                }
+            });
+        }
+
+        // Event listener para el cambio de selección
+        selector.addEventListener('change', filterWidgets);
+
+        // Filtrado inicial al cargar
+        filterWidgets();
+    });
+</script>
+</body>
+</html>
