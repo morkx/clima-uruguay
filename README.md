@@ -8,6 +8,8 @@ Un dashboard meteorológico moderno y responsivo diseñado para monitorear las c
 
 El sistema integra datos de múltiples fuentes (Open-Meteo, Windy, Windguru) para ofrecer una visión completa: desde alertas de lluvia inminente hasta mapas sinópticos de viento.
 
+Se puede ver un ejemplo funcional en https://morkx.github.io/clima-uruguay/
+
 ---
 
 ## 🚀 Características Principales
