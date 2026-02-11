@@ -3,181 +3,262 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Clima Uruguay</title>
+  <title>Dashboard Clima | Dr. Pachulo</title>
 
   <link rel="shortcut icon" href="img/favicon.ico">
-  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900,300&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
   <style>
+    :root {
+      --primary-color: #0f172a;
+      --accent-color: #3b82f6;
+      --card-bg: #ffffff;
+      --bg-color: #f1f5f9;
+    }
+
     body {
-      font-family: 'Open Sans', sans-serif;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: #334155;
     }
+
+    /* Navbar styling */
+    .navbar {
+      background-color: var(--primary-color) !important;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .navbar-brand {
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    /* Header styling */
     header {
-      background: linear-gradient(to right, #2980b9, #6dd5fa);
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
       color: white;
-      padding: 100px 0;
+      padding: 60px 0;
+      margin-bottom: -40px; /* Overlap effect */
+      padding-bottom: 80px;
     }
-    header h1 {
-      font-size: 2.8rem;
+
+    /* Card styling */
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s;
+      overflow: hidden;
       margin-bottom: 20px;
     }
-    #widget-sections section {
-      margin-bottom: 30px;
-    }
-    footer {
-      background-color: #222;
-      color: #ccc;
-      padding: 20px 0;
-      text-align: center;
-    }
     
-    /* --- ESTILOS DEL FILTRO --- */
-    #location-filter {
-        padding: 2rem 0;
-        background-color: #f8f9fa;
-    }
-    #location-selector {
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        max-width: 400px;
-        margin: 0 auto;
-        display: block;
-    }
-    
-    .widget-wrapper {
-        display: none; /* Oculto por defecto hasta que JS filtre */
+    .card-header {
+      background-color: white;
+      border-bottom: 1px solid #e2e8f0;
+      font-weight: 600;
+      padding: 1rem 1.5rem;
     }
 
-    /* Estilo para el contenedor del mapa general */
-    .general-map-container {
-        padding: 20px 0;
-        background-color: #fff;
+    /* Alert styling */
+    #rain-alert {
+      display: none; /* Oculto por defecto */
+      border-left: 5px solid #dc3545;
+      font-weight: 600;
     }
-    .general-map-container iframe {
-        max-width: 100%;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+    /* Location Filter */
+    #location-filter {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 10;
+      margin-top: -30px;
+    }
+
+    /* Chart container height */
+    .chart-container {
+      position: relative;
+      height: 350px;
+      width: 100%;
+    }
+
+    footer {
+      background-color: var(--primary-color);
+      color: #94a3b8;
+      padding: 40px 0;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="#"><i class="fa-solid fa-sun"></i> Tiempo</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+    <a class="navbar-brand" href="#"><i class="fa-solid fa-cloud-bolt me-2"></i>Clima Uruguay</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item"><a class="nav-link" href="#home">Inicio</a></li>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="#widgets">Modelos</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<header class="text-center" id="home">
+<header class="text-center">
   <div class="container">
-    <h1>El estado del tiempo según <strong>Dr. Pachulo</strong></h1>
-    <p class="lead">Una panoplia de estados del tiempo en Uruguay</p>
-    <a href="#location-filter" class="btn btn-light btn-lg mt-4">Ver Pronósticos</a>
+    <h1 class="display-5 fw-bold">Estado del Tiempo</h1>
+    <p class="lead text-light opacity-75">Monitoreo en tiempo real &bull; Dr. Pachulo</p>
+    
+    <div id="rain-alert" class="alert alert-danger mt-4 text-start shadow-lg" role="alert">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid fa-umbrella fa-2x me-3"></i>
+        <div>
+          <h5 class="alert-heading mb-0">¡Alerta de Precipitaciones!</h5>
+          <p class="mb-0" id="rain-alert-text">Se detecta lluvia en las próximas 2 horas.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
-<div class="container text-center general-map-container">
-    <h3 class="mb-3">Mapa General de Viento y Temperatura</h3>
-    <iframe width="650" height="450" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricTemp=default&metricWind=default&zoom=7&overlay=temp&product=ecmwf&level=surface&lat=-35.631&lon=-55.964&detailLat=-34.826&detailLon=-55.959&detail=true" frameborder="0"></iframe>
-</div>
-
-<div id="location-filter" class="text-center">
-    <div class="container">
-        <h2>Selecciona una Ubicación</h2>
-        <select id="location-selector" class="form-control">
-            <option value="todos">-- Mostrar Todas --</option>
-            <option value="solymar" selected>Solymar</option>
-            <option value="montevideo">Montevideo</option>
-        </select>
-    </div>
-</div>
-
-<div id="widget-sections" class="container py-5">
-  <div class="row">
+<div class="container">
     
-    <div class="col-md-12 mb-4 widget-wrapper" data-location="solymar">
-        <h4 class="text-center">Windguru (Solymar)</h4>
-        <script id="wg_fwdg_313166_100_1757084432549">
-(function (window, document) {
-  var loader = function () {
-    var arg = ["s=313166" ,"m=100","uid=wg_fwdg_313166_100_1757084432549" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"idbs=1" ,"p=WINDSPD,TMPE,WCHILL,TCDC,APCP1s,SLP,RH"];
-    var script = document.createElement("script");
-    var tag = document.getElementsByTagName("script")[0];
-    script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
-    tag.parentNode.insertBefore(script, tag);
-  };
-  window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
-})(window, document);
-</script>
+    <div id="location-filter" class="mx-auto col-md-8 mb-5">
+        <div class="row align-items-center">
+            <div class="col-md-4 text-md-end">
+                <label for="location-selector" class="fw-bold mb-0">Ubicación:</label>
+            </div>
+            <div class="col-md-8">
+                <select id="location-selector" class="form-select form-select-lg">
+                    <option value="todos">Mostrar Todo</option>
+                    <option value="solymar" selected>Solymar (Costa de Oro)</option>
+                    <option value="montevideo">Montevideo</option>
+                </select>
+            </div>
+        </div>
     </div>
 
-    <div class="col-md-12 mb-4 widget-wrapper" data-location="solymar montevideo">
-        <h4 class="text-center">Windguru (Montevideo)</h4>
-        <script id="wg_fwdg_1253312_100_1757084596073">
-(function (window, document) {
-  var loader = function () {
-    var arg = ["s=1253312" ,"m=100","uid=wg_fwdg_1253312_100_1757084596073" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"idbs=1" ,"p=WINDSPD,TMPE,WCHILL,TCDC,APCP1s,SLP,RH"];
-    var script = document.createElement("script");
-    var tag = document.getElementsByTagName("script")[0];
-    script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
-    tag.parentNode.insertBefore(script, tag);
-  };
-  window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
-})(window, document);
-</script>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="fa-solid fa-chart-line me-2 text-primary"></i>Pronóstico Próximas 48hs (Open-Meteo)</span>
+                    <span class="badge bg-primary rounded-pill" id="current-temp-badge">Cargando...</span>
+                </div>
+                <div class="card-body">
+                   <div class="chart-container">
+                       <canvas id="weatherChart"></canvas>
+                   </div>
+                   <div class="row mt-3 text-center small text-muted">
+                        <div class="col-3 border-end">
+                            <strong class="d-block text-dark" id="val-uv">--</strong> Índice UV Max
+                        </div>
+                        <div class="col-3 border-end">
+                            <strong class="d-block text-dark" id="val-wind">-- km/h</strong> Viento (Ahora)
+                        </div>
+                        <div class="col-3 border-end">
+                            <strong class="d-block text-dark" id="val-humidity">--%</strong> Humedad
+                        </div>
+                        <div class="col-3">
+                            <strong class="d-block text-dark" id="val-pressure">-- hPa</strong> Presión
+                        </div>
+                   </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="col-md-12 mb-4 widget-wrapper" data-location="solymar montevideo">
-        <h4 class="text-center">Mapa de Viento (Detalle)</h4>
-        <iframe width="100%" height="300" src="https://embed.windy.com/embed.html?type=forecast&location=coordinates&detail=true&detailLat=-34.82726583246643&detailLon=-55.98551167620765&metricTemp=default&metricRain=default&metricWind=default" frameborder="0"></iframe>
-    </div>
-    
-    <div class="col-md-12 widget-wrapper" data-location="solymar montevideo">
-        <h4 class="text-center">Pronóstico Extendido (Forecast7)</h4>
-        <a class="weatherwidget-io" href="https://forecast7.com/en/n34d90n56d16/montevideo/" data-label_1="URUGUAY" data-label_2="PRONOSTICO" data-theme="clear">MONTEVIDEO WEATHER</a>
-        <script>
-          !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
-        </script>
-    </div>
+    <div id="widget-sections" class="row">
+        
+        <div class="col-12 mb-4 widget-wrapper" data-location="solymar montevideo">
+            <div class="card">
+                <div class="card-header">Mapa Sinóptico</div>
+                <div class="card-body p-0">
+                    <iframe width="100%" height="400" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricTemp=default&metricWind=default&zoom=7&overlay=temp&product=ecmwf&level=surface&lat=-35.631&lon=-55.964&detailLat=-34.826&detailLon=-55.959&detail=true" frameborder="0" style="border-radius: 0 0 12px 12px;"></iframe>
+                </div>
+            </div>
+        </div>
 
-  </div>
-</div>
+        <div class="col-lg-6 mb-4 widget-wrapper" data-location="solymar">
+            <div class="card h-100">
+                <div class="card-header">Windguru (Solymar)</div>
+                <div class="card-body text-center overflow-auto">
+                    <script id="wg_fwdg_313166_100_1757084432549">
+                    (function (window, document) {
+                      var loader = function () {
+                        var arg = ["s=313166" ,"m=100","uid=wg_fwdg_313166_100_1757084432549" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"idbs=1" ,"p=WINDSPD,TMPE,WCHILL,TCDC,APCP1s,SLP,RH"];
+                        var script = document.createElement("script");
+                        var tag = document.getElementsByTagName("script")[0];
+                        script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
+                        tag.parentNode.insertBefore(script, tag);
+                      };
+                      window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+                    })(window, document);
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4 widget-wrapper" data-location="montevideo">
+            <div class="card h-100">
+                <div class="card-header">Windguru (Montevideo)</div>
+                <div class="card-body text-center overflow-auto">
+                    <script id="wg_fwdg_1253312_100_1757084596073">
+                    (function (window, document) {
+                      var loader = function () {
+                        var arg = ["s=1253312" ,"m=100","uid=wg_fwdg_1253312_100_1757084596073" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"idbs=1" ,"p=WINDSPD,TMPE,WCHILL,TCDC,APCP1s,SLP,RH"];
+                        var script = document.createElement("script");
+                        var tag = document.getElementsByTagName("script")[0];
+                        script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
+                        tag.parentNode.insertBefore(script, tag);
+                      };
+                      window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+                    })(window, document);
+                    </script>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-12 mb-4 widget-wrapper" data-location="solymar montevideo">
+            <div class="card">
+                <div class="card-header">Detalle de Viento (Windy)</div>
+                <div class="card-body p-0">
+                    <iframe width="100%" height="300" src="https://embed.windy.com/embed.html?type=forecast&location=coordinates&detail=true&detailLat=-34.82726583246643&detailLon=-55.98551167620765&metricTemp=default&metricRain=default&metricWind=default" frameborder="0" style="border-radius: 0 0 12px 12px;"></iframe>
+                </div>
+            </div>
+        </div>
+
+    </div></div>
 
 <footer>
-  <div class="container">
-    <p>&copy; 2026 Clima Uruguay. Desarrollado por Dr. Pachulo con amor y nubes.</p>
+  <div class="container text-center">
+    <p class="mb-1">&copy; 2026 Clima Uruguay.</p>
+    <small>Datos provistos por Open-Meteo API, Windguru & Windy.</small>
   </div>
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // --- 1. Lógica del Filtro (Mejorada) ---
         const selector = document.getElementById('location-selector');
         const widgets = document.querySelectorAll('.widget-wrapper');
 
         function filterWidgets() {
             const selectedLocation = selector.value;
             widgets.forEach(widget => {
-                // Obtenemos las ubicaciones asignadas al widget (separadas por espacio)
                 const locations = widget.getAttribute('data-location').split(' ');
-                
-                // Mostramos si es 'todos' O si la ubicación seleccionada está incluida en la lista del widget
                 if (selectedLocation === 'todos' || locations.includes(selectedLocation)) {
                     widget.style.display = 'block';
                 } else {
@@ -185,12 +266,162 @@
                 }
             });
         }
-
-        // Event listener para el cambio de selección
         selector.addEventListener('change', filterWidgets);
-
-        // Filtrado inicial al cargar
         filterWidgets();
+
+        // --- 2. Integración Open-Meteo ---
+        const apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=-34.82&longitude=-55.95&daily=sunset,sunrise,uv_index_max&hourly=temperature_2m,rain,precipitation_probability,relative_humidity_2m,pressure_msl,wind_speed_10m&timezone=auto&past_days=1&forecast_days=3";
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                processWeatherData(data);
+            })
+            .catch(error => {
+                console.error("Error al obtener datos:", error);
+                document.getElementById('current-temp-badge').innerText = "Error API";
+                document.getElementById('current-temp-badge').classList.replace('bg-primary', 'bg-danger');
+            });
+
+        function processWeatherData(data) {
+            const hourly = data.hourly;
+            const now = new Date();
+            let currentIndex = 0;
+
+            // Encontrar el índice de la hora actual en el array de tiempos de la API
+            // La API devuelve ISO strings (ej: "2026-02-11T14:00")
+            // Buscamos la coincidencia más cercana a la hora actual
+            const currentIsoHour = now.toISOString().slice(0, 13); // "YYYY-MM-DDTHH"
+            
+            // Recorremos buscando la hora actual
+            for(let i=0; i < hourly.time.length; i++) {
+                if(hourly.time[i].startsWith(currentIsoHour)) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+
+            // --- A. Actualizar Datos Actuales (Badge y Footer del chart) ---
+            const currentTemp = hourly.temperature_2m[currentIndex];
+            const currentWind = hourly.wind_speed_10m[currentIndex];
+            const currentHum = hourly.relative_humidity_2m[currentIndex];
+            const currentPress = hourly.pressure_msl[currentIndex];
+            // UV index está en daily, usamos el del día de hoy (índice 1 usualmente si past_days=1)
+            const maxUvToday = data.daily.uv_index_max[1]; 
+
+            document.getElementById('current-temp-badge').innerText = `Ahora: ${currentTemp}°C`;
+            document.getElementById('val-wind').innerText = `${currentWind} km/h`;
+            document.getElementById('val-humidity').innerText = `${currentHum}%`;
+            document.getElementById('val-pressure').innerText = `${currentPress} hPa`;
+            document.getElementById('val-uv').innerText = maxUvToday;
+
+            // --- B. Alerta de Lluvia (Próximas 2 horas) ---
+            // Revisamos índice actual y el siguiente (currentIndex + 1)
+            let rainWarning = false;
+            let rainDetails = "";
+
+            // Umbrales: Probabilidad > 50% O Lluvia > 0.1mm
+            for(let j=0; j<2; j++) {
+                let idx = currentIndex + j;
+                let prob = hourly.precipitation_probability[idx];
+                let mm = hourly.rain[idx];
+                
+                if (prob >= 50 || mm > 0.1) {
+                    rainWarning = true;
+                    rainDetails = `Probabilidad: ${prob}% - Intensidad: ${mm}mm`;
+                    break; 
+                }
+            }
+
+            if (rainWarning) {
+                const alertBox = document.getElementById('rain-alert');
+                const alertText = document.getElementById('rain-alert-text');
+                alertBox.style.display = 'block'; // Mostrar alerta
+                alertText.innerText = `Se detectan condiciones de lluvia en las próximas 2 horas. (${rainDetails})`;
+            }
+
+            // --- C. Graficar (Chart.js) ---
+            // Tomamos un rango de datos para que el gráfico no sea gigante.
+            // Desde "hace 6 horas" hasta "dentro de 42 horas" (total 48hs aprox)
+            const sliceStart = Math.max(0, currentIndex - 6);
+            const sliceEnd = Math.min(hourly.time.length, currentIndex + 42);
+
+            const labels = hourly.time.slice(sliceStart, sliceEnd).map(t => {
+                const date = new Date(t);
+                return date.getHours() + ':00'; // Formato HH:00
+            });
+            const tempData = hourly.temperature_2m.slice(sliceStart, sliceEnd);
+            const rainProbData = hourly.precipitation_probability.slice(sliceStart, sliceEnd);
+
+            const ctx = document.getElementById('weatherChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar', // Tipo base bar para poder mezclar con linea
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Temperatura (°C)',
+                            data: tempData,
+                            type: 'line',
+                            borderColor: '#ef4444', // Rojo
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4, // Curvas suaves
+                            yAxisID: 'y',
+                            pointRadius: 0, // Ocultar puntos para limpieza visual
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'Prob. Lluvia (%)',
+                            data: rainProbData,
+                            type: 'bar',
+                            backgroundColor: 'rgba(59, 130, 246, 0.6)', // Azul
+                            yAxisID: 'y1',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleFont: { size: 13 },
+                            bodyFont: { size: 13 },
+                            padding: 10,
+                            cornerRadius: 8
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Temp (°C)' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            min: 0,
+                            max: 100,
+                            grid: { drawOnChartArea: false }, // Solo grilla del eje principal
+                            title: { display: true, text: 'Prob. Lluvia (%)' }
+                        }
+                    }
+                }
+            });
+        }
     });
 </script>
 </body>
