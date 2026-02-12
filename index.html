@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard Clima | Dr. Pachulo</title>
+  <title>El tiempo recopilado por Dr. Pachulo</title>
 
-  <link rel="shortcut icon" href="img/favicon.ico">
+  <link rel="icon" href="img/favicon.ico">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -26,26 +26,23 @@
       color: #334155;
     }
 
-    /* Navbar styling */
+    /* Navbar */
     .navbar {
       background-color: var(--primary-color) !important;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-    .navbar-brand {
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
+    .navbar-brand { font-weight: 800; letter-spacing: -0.5px; }
 
-    /* Header styling */
+    /* Header */
     header {
       background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
       color: white;
       padding: 60px 0;
-      margin-bottom: -40px; /* Overlap effect */
+      margin-bottom: -40px;
       padding-bottom: 80px;
     }
 
-    /* Card styling */
+    /* Cards */
     .card {
       border: none;
       border-radius: 12px;
@@ -54,7 +51,6 @@
       overflow: hidden;
       margin-bottom: 20px;
     }
-    
     .card-header {
       background-color: white;
       border-bottom: 1px solid #e2e8f0;
@@ -62,14 +58,14 @@
       padding: 1rem 1.5rem;
     }
 
-    /* Alert styling */
+    /* Alerts */
     #rain-alert {
-      display: none; /* Oculto por defecto */
+      display: none; 
       border-left: 5px solid #dc3545;
       font-weight: 600;
     }
 
-    /* Location Filter */
+    /* Filter */
     #location-filter {
       background: white;
       padding: 20px;
@@ -80,12 +76,8 @@
       margin-top: -30px;
     }
 
-    /* Chart container height */
-    .chart-container {
-      position: relative;
-      height: 350px;
-      width: 100%;
-    }
+    /* Chart */
+    .chart-container { position: relative; height: 350px; width: 100%; }
 
     footer {
       background-color: var(--primary-color);
@@ -106,7 +98,6 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="#widgets">Modelos</a></li>
       </ul>
     </div>
   </div>
@@ -115,7 +106,7 @@
 <header class="text-center">
   <div class="container">
     <h1 class="display-5 fw-bold">Estado del Tiempo</h1>
-    <p class="lead text-light opacity-75">Monitoreo en tiempo real &bull; Dr. Pachulo</p>
+    <p class="lead text-light opacity-75">Monitoreo Nacional &bull; Dr. Pachulo</p>
     
     <div id="rain-alert" class="alert alert-danger mt-4 text-start shadow-lg" role="alert">
       <div class="d-flex align-items-center">
@@ -134,13 +125,43 @@
     <div id="location-filter" class="mx-auto col-md-8 mb-5">
         <div class="row align-items-center">
             <div class="col-md-4 text-md-end">
-                <label for="location-selector" class="fw-bold mb-0">Ubicación:</label>
+                <label for="location-selector" class="fw-bold mb-0">Seleccionar Localidad:</label>
             </div>
             <div class="col-md-8">
                 <select id="location-selector" class="form-select form-select-lg">
-                    <option value="todos">Mostrar Todo</option>
-                    <option value="solymar" selected>Solymar (Costa de Oro)</option>
-                    <option value="montevideo">Montevideo</option>
+                    <option value="todos">-- Vista General --</option>
+                    
+                    <optgroup label="Zona Metropolitana">
+                        <option value="montevideo">Montevideo</option>
+                        <option value="solymar" selected>Ciudad de la Costa (Solymar)</option>
+                        <option value="canelones">Canelones (Capital)</option>
+                        <option value="sanjose">San José de Mayo</option>
+                    </optgroup>
+
+                    <optgroup label="Este">
+                        <option value="maldonado">Maldonado / Punta del Este</option>
+                        <option value="rocha">Rocha</option>
+                        <option value="treintaytres">Treinta y Tres</option>
+                        <option value="lavalleja">Minas (Lavalleja)</option>
+                    </optgroup>
+
+                    <optgroup label="Litoral / Oeste">
+                        <option value="colonia">Colonia del Sacramento</option>
+                        <option value="soriano">Mercedes (Soriano)</option>
+                        <option value="rionegro">Fray Bentos (Río Negro)</option>
+                        <option value="paysandu">Paysandú</option>
+                        <option value="salto">Salto</option>
+                        <option value="artigas">Artigas</option>
+                    </optgroup>
+
+                    <optgroup label="Centro / Norte">
+                        <option value="florida">Florida</option>
+                        <option value="flores">Trinidad (Flores)</option>
+                        <option value="durazno">Durazno</option>
+                        <option value="tacuarembo">Tacuarembó</option>
+                        <option value="rivera">Rivera</option>
+                        <option value="cerrolargo">Melo (Cerro Largo)</option>
+                    </optgroup>
                 </select>
             </div>
         </div>
@@ -150,7 +171,7 @@
         <div class="col-12">
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="fa-solid fa-chart-line me-2 text-primary"></i>Pronóstico Próximas 48hs (Open-Meteo)</span>
+                    <span id="chart-title"><i class="fa-solid fa-chart-line me-2 text-primary"></i>Pronóstico: Solymar</span>
                     <span class="badge bg-primary rounded-pill" id="current-temp-badge">Cargando...</span>
                 </div>
                 <div class="card-body">
@@ -178,11 +199,23 @@
 
     <div id="widget-sections" class="row">
         
-        <div class="col-12 mb-4 widget-wrapper" data-location="solymar montevideo">
-            <div class="card">
-                <div class="card-header">Mapa Sinóptico</div>
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">Mapa Sinóptico (Viento/Temp)</div>
                 <div class="card-body p-0">
-                    <iframe width="100%" height="400" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricTemp=default&metricWind=default&zoom=7&overlay=rain&product=ecmwf&level=surface&lat=-35.631&lon=-55.964&detailLat=-34.826&detailLon=-55.959&detail=true" frameborder="0" style="border-radius: 0 0 12px 12px;"></iframe>
+                    <iframe id="windy-map-iframe" width="100%" height="400" src="" frameborder="0" style="border-radius: 0 0 12px 12px;"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Satélite GOES-19 (GeoColor)</span>
+                    <span class="badge bg-success rounded-pill">En Vivo</span>
+                </div>
+                <div class="card-body p-0 d-flex align-items-center justify-content-center bg-black">
+                    <img id="goes-gif" src="https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/ssa/GEOCOLOR/GOES19-SSA-GEOCOLOR-900x540.gif" alt="Satélite GOES-19" class="img-fluid" style="max-height: 400px; width: auto;">
                 </div>
             </div>
         </div>
@@ -191,10 +224,10 @@
             <div class="card h-100">
                 <div class="card-header">Windguru (Solymar)</div>
                 <div class="card-body text-center overflow-auto">
-                    <script id="wg_fwdg_313166_100_1757084432549">
+                    <script id="wg_fwdg_313166_29_1770925276942">
                     (function (window, document) {
                       var loader = function () {
-                        var arg = ["s=313166" ,"m=100","uid=wg_fwdg_313166_100_1757084432549" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"idbs=1" ,"p=WINDSPD,TMPE,WCHILL,TCDC,APCP1s,SLP,RH"];
+                        var arg = ["s=313166" ,"m=29","uid=wg_fwdg_313166_29_1770925276942" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=48" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"p=WINDSPD,GUST,TCDC,APCP1s,RH"];
                         var script = document.createElement("script");
                         var tag = document.getElementsByTagName("script")[0];
                         script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
@@ -211,37 +244,29 @@
             <div class="card h-100">
                 <div class="card-header">Windguru (Montevideo)</div>
                 <div class="card-body text-center overflow-auto">
-                    <script id="wg_fwdg_1253312_100_1757084596073">
-                    (function (window, document) {
-                      var loader = function () {
-                        var arg = ["s=1253312" ,"m=100","uid=wg_fwdg_1253312_100_1757084596073" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"idbs=1" ,"p=WINDSPD,TMPE,WCHILL,TCDC,APCP1s,SLP,RH"];
-                        var script = document.createElement("script");
-                        var tag = document.getElementsByTagName("script")[0];
-                        script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
-                        tag.parentNode.insertBefore(script, tag);
-                      };
-                      window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
-                    })(window, document);
-                    </script>
+                <script id="wg_fwdg_1253312_29_1770925453253">
+                (function (window, document) {
+                  var loader = function () {
+                    var arg = ["s=1253312" ,"m=29","uid=wg_fwdg_1253312_29_1770925453253","ai=0" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"p=WINDSPD,GUST,TMPE,TCDC,APCP1s,RH"];
+                    var script = document.createElement("script");
+                    var tag = document.getElementsByTagName("script")[0];
+                    script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
+                    tag.parentNode.insertBefore(script, tag);
+                  };
+                  window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+                })(window, document);
+                </script>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-12 mb-4 widget-wrapper" data-location="solymar montevideo">
-            <div class="card">
-                <div class="card-header">Detalle de Viento (Windy)</div>
-                <div class="card-body p-0">
-                    <iframe width="100%" height="300" src="https://embed.windy.com/embed.html?type=forecast&location=coordinates&detail=true&detailLat=-34.82726583246643&detailLon=-55.98551167620765&metricTemp=default&metricRain=default&metricWind=default" frameborder="0" style="border-radius: 0 0 12px 12px;"></iframe>
-                </div>
-            </div>
-        </div>
-
-    </div></div>
+    </div>
+</div>
 
 <footer>
   <div class="container text-center">
     <p class="mb-1">&copy; 2026 Clima Uruguay.</p>
-    <small>Datos provistos por Open-Meteo API, Windguru & Windy.</small>
+    <small>Datos provistos por Open-Meteo API, Windguru, Windy & NOAA.</small>
   </div>
 </footer>
 
@@ -251,49 +276,107 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // --- 1. Lógica del Filtro (Mejorada) ---
+        
+        // --- 0. Configuración de Coordenadas Completa ---
+        const coords = {
+            'solymar': { lat: -34.82, lon: -55.95, name: 'Solymar (Cd. Costa)' },
+            'montevideo': { lat: -34.90, lon: -56.16, name: 'Montevideo' },
+            'canelones': { lat: -34.52, lon: -56.28, name: 'Canelones' },
+            'maldonado': { lat: -34.90, lon: -54.95, name: 'Maldonado' },
+            'rocha': { lat: -34.48, lon: -54.33, name: 'Rocha' },
+            'treintaytres': { lat: -33.23, lon: -54.38, name: 'Treinta y Tres' },
+            'cerrolargo': { lat: -32.37, lon: -54.17, name: 'Melo' },
+            'rivera': { lat: -30.90, lon: -55.55, name: 'Rivera' },
+            'artigas': { lat: -30.40, lon: -56.46, name: 'Artigas' },
+            'salto': { lat: -31.38, lon: -57.96, name: 'Salto' },
+            'paysandu': { lat: -32.32, lon: -58.08, name: 'Paysandú' },
+            'rionegro': { lat: -33.13, lon: -58.30, name: 'Fray Bentos' },
+            'soriano': { lat: -33.25, lon: -58.03, name: 'Mercedes' },
+            'colonia': { lat: -34.46, lon: -57.84, name: 'Colonia del Sacramento' },
+            'sanjose': { lat: -34.34, lon: -56.71, name: 'San José de Mayo' },
+            'flores': { lat: -33.52, lon: -56.90, name: 'Trinidad' },
+            'florida': { lat: -34.10, lon: -56.21, name: 'Florida' },
+            'durazno': { lat: -33.38, lon: -56.53, name: 'Durazno' },
+            'tacuarembo': { lat: -31.71, lon: -55.98, name: 'Tacuarembó' },
+            'lavalleja': { lat: -34.38, lon: -55.24, name: 'Minas' },
+            'todos': { lat: -34.82, lon: -55.95, name: 'General' } 
+        };
+
+        let myChart = null; 
+
+        // --- 1. Lógica del Filtro y Actualización ---
         const selector = document.getElementById('location-selector');
         const widgets = document.querySelectorAll('.widget-wrapper');
+        const windyMapIframe = document.getElementById('windy-map-iframe');
 
-        function filterWidgets() {
-            const selectedLocation = selector.value;
+        function updateDashboard() {
+            const selectedKey = selector.value;
+            
+            // 1. Filtrar Widgets (Windguru solo para MVD/Solymar)
             widgets.forEach(widget => {
+                if (!widget.hasAttribute('data-location')) return;
                 const locations = widget.getAttribute('data-location').split(' ');
-                if (selectedLocation === 'todos' || locations.includes(selectedLocation)) {
+
+                if (selectedKey === 'todos') {
+                    widget.style.display = 'none'; 
+                } else if (locations.includes(selectedKey)) {
                     widget.style.display = 'block';
                 } else {
                     widget.style.display = 'none';
                 }
             });
+
+            // 2. Obtener Coordenadas
+            const locData = coords[selectedKey] || coords['solymar'];
+            
+            // 3. Título del Gráfico
+            document.getElementById('chart-title').innerHTML = `<i class="fa-solid fa-chart-line me-2 text-primary"></i>Pronóstico: ${locData.name}`;
+
+            // 4. ACTUALIZAR MAPA SINÓPTICO (WINDY)
+            if (windyMapIframe) {
+                // Si es "todos", usamos zoom lejano, si es departamento, zoom cercano
+                const zoom = selectedKey === 'todos' ? 6 : 9;
+                
+                // Url de Windy tipo "map" (Sinóptico) centrada en el departamento
+                // Se usa 'detail=true' para que aparezca la "burbuja" con datos si el usuario lo desea,
+                // pero la vista es de mapa, no de widget de pronóstico.
+                const newSrc = `https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricTemp=default&metricWind=default&zoom=${zoom}&overlay=rain&product=ecmwf&level=surface&lat=${locData.lat}&lon=${locData.lon}&detailLat=${locData.lat}&detailLon=${locData.lon}&detail=true&message=true`;
+                windyMapIframe.src = newSrc;
+            }
+
+            // 5. Obtener datos Open-Meteo
+            fetchWeatherData(locData.lat, locData.lon);
         }
-        selector.addEventListener('change', filterWidgets);
-        filterWidgets();
 
-        // --- 2. Integración Open-Meteo ---
-        const apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=-34.82&longitude=-55.95&daily=sunset,sunrise,uv_index_max&hourly=temperature_2m,rain,precipitation_probability,relative_humidity_2m,pressure_msl,wind_speed_10m&timezone=auto&past_days=1&forecast_days=3";
+        selector.addEventListener('change', updateDashboard);
+        
 
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                processWeatherData(data);
-            })
-            .catch(error => {
-                console.error("Error al obtener datos:", error);
-                document.getElementById('current-temp-badge').innerText = "Error API";
-                document.getElementById('current-temp-badge').classList.replace('bg-primary', 'bg-danger');
-            });
+        // --- 2. Función Datos Open-Meteo ---
+        function fetchWeatherData(lat, lon) {
+            const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=sunset,sunrise,uv_index_max&hourly=temperature_2m,rain,precipitation_probability,relative_humidity_2m,pressure_msl,wind_speed_10m&timezone=auto&past_days=1&forecast_days=3`;
+
+            document.getElementById('current-temp-badge').innerText = "Cargando...";
+            document.getElementById('current-temp-badge').className = "badge bg-secondary rounded-pill";
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    processWeatherData(data);
+                })
+                .catch(error => {
+                    console.error("Error API:", error);
+                    document.getElementById('current-temp-badge').innerText = "Error";
+                    document.getElementById('current-temp-badge').className = "badge bg-danger rounded-pill";
+                });
+        }
 
         function processWeatherData(data) {
             const hourly = data.hourly;
             const now = new Date();
             let currentIndex = 0;
 
-            // Encontrar el índice de la hora actual en el array de tiempos de la API
-            // La API devuelve ISO strings (ej: "2026-02-11T14:00")
-            // Buscamos la coincidencia más cercana a la hora actual
-            const currentIsoHour = now.toISOString().slice(0, 13); // "YYYY-MM-DDTHH"
+            const currentIsoHour = now.toISOString().slice(0, 13);
             
-            // Recorremos buscando la hora actual
             for(let i=0; i < hourly.time.length; i++) {
                 if(hourly.time[i].startsWith(currentIsoHour)) {
                     currentIndex = i;
@@ -301,28 +384,27 @@
                 }
             }
 
-            // --- A. Actualizar Datos Actuales (Badge y Footer del chart) ---
             const currentTemp = hourly.temperature_2m[currentIndex];
             const currentWind = hourly.wind_speed_10m[currentIndex];
             const currentHum = hourly.relative_humidity_2m[currentIndex];
             const currentPress = hourly.pressure_msl[currentIndex];
-            // UV index está en daily, usamos el del día de hoy (índice 1 usualmente si past_days=1)
-            const maxUvToday = data.daily.uv_index_max[1]; 
+            const maxUvToday = data.daily.uv_index_max[1] || data.daily.uv_index_max[0]; 
 
             document.getElementById('current-temp-badge').innerText = `Ahora: ${currentTemp}°C`;
+            document.getElementById('current-temp-badge').className = "badge bg-primary rounded-pill";
             document.getElementById('val-wind').innerText = `${currentWind} km/h`;
             document.getElementById('val-humidity').innerText = `${currentHum}%`;
             document.getElementById('val-pressure').innerText = `${currentPress} hPa`;
             document.getElementById('val-uv').innerText = maxUvToday;
 
-            // --- B. Alerta de Lluvia (Próximas 2 horas) ---
-            // Revisamos índice actual y el siguiente (currentIndex + 1)
             let rainWarning = false;
             let rainDetails = "";
+            const alertBox = document.getElementById('rain-alert');
 
-            // Umbrales: Probabilidad > 50% O Lluvia > 0.1mm
             for(let j=0; j<2; j++) {
                 let idx = currentIndex + j;
+                if (idx >= hourly.precipitation_probability.length) break;
+
                 let prob = hourly.precipitation_probability[idx];
                 let mm = hourly.rain[idx];
                 
@@ -334,29 +416,30 @@
             }
 
             if (rainWarning) {
-                const alertBox = document.getElementById('rain-alert');
-                const alertText = document.getElementById('rain-alert-text');
-                alertBox.style.display = 'block'; // Mostrar alerta
-                alertText.innerText = `Se detectan condiciones de lluvia en las próximas 2 horas. (${rainDetails})`;
+                alertBox.style.display = 'block'; 
+                document.getElementById('rain-alert-text').innerText = `Riesgo de precipitaciones en las próximas 2 horas. (${rainDetails})`;
+            } else {
+                alertBox.style.display = 'none'; 
             }
 
-            // --- C. Graficar (Chart.js) ---
-            // Tomamos un rango de datos para que el gráfico no sea gigante.
-            // Desde "hace 6 horas" hasta "dentro de 42 horas" (total 48hs aprox)
             const sliceStart = Math.max(0, currentIndex - 6);
             const sliceEnd = Math.min(hourly.time.length, currentIndex + 42);
 
             const labels = hourly.time.slice(sliceStart, sliceEnd).map(t => {
                 const date = new Date(t);
-                return date.getHours() + ':00'; // Formato HH:00
+                return date.getHours() + ':00';
             });
             const tempData = hourly.temperature_2m.slice(sliceStart, sliceEnd);
             const rainProbData = hourly.precipitation_probability.slice(sliceStart, sliceEnd);
 
             const ctx = document.getElementById('weatherChart').getContext('2d');
             
-            new Chart(ctx, {
-                type: 'bar', // Tipo base bar para poder mezclar con linea
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [
@@ -364,19 +447,19 @@
                             label: 'Temperatura (°C)',
                             data: tempData,
                             type: 'line',
-                            borderColor: '#ef4444', // Rojo
+                            borderColor: '#ef4444',
                             backgroundColor: 'rgba(239, 68, 68, 0.1)',
                             borderWidth: 3,
-                            tension: 0.4, // Curvas suaves
+                            tension: 0.4,
                             yAxisID: 'y',
-                            pointRadius: 0, // Ocultar puntos para limpieza visual
+                            pointRadius: 0,
                             pointHoverRadius: 6
                         },
                         {
                             label: 'Prob. Lluvia (%)',
                             data: rainProbData,
                             type: 'bar',
-                            backgroundColor: 'rgba(59, 130, 246, 0.6)', // Azul
+                            backgroundColor: 'rgba(59, 130, 246, 0.6)',
                             yAxisID: 'y1',
                             borderRadius: 4
                         }
@@ -385,43 +468,41 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    interaction: {
-                        mode: 'index',
-                        intersect: false,
-                    },
+                    interaction: { mode: 'index', intersect: false },
                     plugins: {
                         legend: { position: 'top' },
                         tooltip: {
                             backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                            titleFont: { size: 13 },
-                            bodyFont: { size: 13 },
                             padding: 10,
                             cornerRadius: 8
                         }
                     },
                     scales: {
-                        x: {
-                            grid: { display: false }
-                        },
+                        x: { grid: { display: false } },
                         y: {
-                            type: 'linear',
-                            display: true,
-                            position: 'left',
+                            type: 'linear', display: true, position: 'left',
                             title: { display: true, text: 'Temp (°C)' }
                         },
                         y1: {
-                            type: 'linear',
-                            display: true,
-                            position: 'right',
-                            min: 0,
-                            max: 100,
-                            grid: { drawOnChartArea: false }, // Solo grilla del eje principal
+                            type: 'linear', display: true, position: 'right',
+                            min: 0, max: 100,
+                            grid: { drawOnChartArea: false },
                             title: { display: true, text: 'Prob. Lluvia (%)' }
                         }
                     }
                 }
             });
         }
+
+        // --- 3. Actualización Automática del GIF de NOAA ---
+        setInterval(function() {
+            const img = document.getElementById('goes-gif');
+            const currentSrc = img.src.split('?')[0];
+            img.src = currentSrc + '?t=' + new Date().getTime();
+        }, 3600000); 
+
+        // Inicializar Dashboard
+        updateDashboard();
     });
 </script>
 </body>
