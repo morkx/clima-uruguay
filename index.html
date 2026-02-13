@@ -64,6 +64,23 @@
       border-left: 5px solid #dc3545;
       font-weight: 600;
     }
+    
+    /* Nuevas Alertas CSS */
+    #heat-alert {
+      display: none;
+      border-left: 5px solid #fd7e14; /* Naranja */
+      font-weight: 600;
+    }
+    #cold-alert {
+      display: none;
+      border-left: 5px solid #0dcaf0; /* Cian/Azul */
+      font-weight: 600;
+    }
+    #wind-alert {
+      display: none;
+      border-left: 5px solid #ffc107; /* Amarillo */
+      font-weight: 600;
+    }
 
     /* Filter */
     #location-filter {
@@ -117,6 +134,37 @@
         </div>
       </div>
     </div>
+
+    <div id="heat-alert" class="alert alert-warning mt-3 text-start shadow-lg" role="alert">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid fa-temperature-high fa-2x me-3 text-danger"></i>
+        <div>
+          <h5 class="alert-heading mb-0">¡Alerta de Calor!</h5>
+          <p class="mb-0" id="heat-alert-text">Temperaturas elevadas próximas.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="cold-alert" class="alert alert-info mt-3 text-start shadow-lg" role="alert">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid fa-snowflake fa-2x me-3 text-primary"></i>
+        <div>
+          <h5 class="alert-heading mb-0">¡Alerta de Frío Extremo!</h5>
+          <p class="mb-0" id="cold-alert-text">Temperaturas bajo cero próximas.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="wind-alert" class="alert alert-warning mt-3 text-start shadow-lg" role="alert">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid fa-wind fa-2x me-3 text-dark"></i>
+        <div>
+          <h5 class="alert-heading mb-0">¡Alerta de Vientos Fuertes!</h5>
+          <p class="mb-0" id="wind-alert-text">Vientos intensos próximos.</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </header>
 
@@ -129,11 +177,11 @@
             </div>
             <div class="col-md-8">
                 <select id="location-selector" class="form-select form-select-lg">
-                    <option value="todos">-- Vista General --</option>
+                    <option value="todos" selected>-- Vista General --</option>
                     
                     <optgroup label="Zona Metropolitana">
                         <option value="montevideo">Montevideo</option>
-                        <option value="solymar" selected>Ciudad de la Costa (Solymar)</option>
+                        <option value="solymar">Ciudad de la Costa (Solymar)</option>
                         <option value="canelones">Canelones (Capital)</option>
                         <option value="sanjose">San José de Mayo</option>
                     </optgroup>
@@ -227,7 +275,7 @@
                     <script id="wg_fwdg_313166_29_1770925276942">
                     (function (window, document) {
                       var loader = function () {
-                        var arg = ["s=313166" ,"m=29","uid=wg_fwdg_313166_29_1770925276942" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=48" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"p=WINDSPD,GUST,TCDC,APCP1s,RH"];
+                        var arg = ["s=313166" ,"m=29","uid=wg_fwdg_313166_29_1770925276942" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=48" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"p=WINDSPD,GUST,TMPE,TCDC,APCP1s,RH"];
                         var script = document.createElement("script");
                         var tag = document.getElementsByTagName("script")[0];
                         script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
@@ -338,8 +386,6 @@
                 const zoom = selectedKey === 'todos' ? 6 : 9;
                 
                 // Url de Windy tipo "map" (Sinóptico) centrada en el departamento
-                // Se usa 'detail=true' para que aparezca la "burbuja" con datos si el usuario lo desea,
-                // pero la vista es de mapa, no de widget de pronóstico.
                 const newSrc = `https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricTemp=default&metricWind=default&zoom=${zoom}&overlay=rain&product=ecmwf&level=surface&lat=${locData.lat}&lon=${locData.lon}&detailLat=${locData.lat}&detailLon=${locData.lon}&detail=true&message=true`;
                 windyMapIframe.src = newSrc;
             }
@@ -397,31 +443,71 @@
             document.getElementById('val-pressure').innerText = `${currentPress} hPa`;
             document.getElementById('val-uv').innerText = maxUvToday;
 
+            // --- LÓGICA DE ALERTAS ---
             let rainWarning = false;
             let rainDetails = "";
-            const alertBox = document.getElementById('rain-alert');
+            
+            let heatWarning = false;
+            let heatDetails = "";
+            
+            let coldWarning = false;
+            let coldDetails = "";
+            
+            let windWarning = false;
+            let windDetails = "";
 
+            const alertBoxRain = document.getElementById('rain-alert');
+            const alertBoxHeat = document.getElementById('heat-alert');
+            const alertBoxCold = document.getElementById('cold-alert');
+            const alertBoxWind = document.getElementById('wind-alert');
+
+            // Revisamos próximas 2 horas (índice actual y siguiente)
             for(let j=0; j<2; j++) {
                 let idx = currentIndex + j;
                 if (idx >= hourly.precipitation_probability.length) break;
 
+                // Lluvia
                 let prob = hourly.precipitation_probability[idx];
                 let mm = hourly.rain[idx];
-                
                 if (prob >= 50 || mm > 0.1) {
                     rainWarning = true;
                     rainDetails = `Probabilidad: ${prob}% - Intensidad: ${mm}mm`;
-                    break; 
+                }
+                
+                // Temperatura (Calor > 30, Frío < 0)
+                let temp = hourly.temperature_2m[idx];
+                if (temp > 30) {
+                    heatWarning = true;
+                    heatDetails = `Pico estimado: ${temp}°C`;
+                }
+                if (temp < 0) {
+                    coldWarning = true;
+                    coldDetails = `Mínima estimada: ${temp}°C`;
+                }
+                
+                // Viento (> 60 km/h)
+                let wind = hourly.wind_speed_10m[idx];
+                if (wind > 60) {
+                    windWarning = true;
+                    windDetails = `Ráfagas: ${wind} km/h`;
                 }
             }
 
-            if (rainWarning) {
-                alertBox.style.display = 'block'; 
-                document.getElementById('rain-alert-text').innerText = `Riesgo de precipitaciones en las próximas 2 horas. (${rainDetails})`;
-            } else {
-                alertBox.style.display = 'none'; 
-            }
+            // Mostrar/Ocultar Alertas
+            alertBoxRain.style.display = rainWarning ? 'block' : 'none';
+            if(rainWarning) document.getElementById('rain-alert-text').innerText = `Se detecta lluvia en las próximas 2 horas. (${rainDetails})`;
 
+            alertBoxHeat.style.display = heatWarning ? 'block' : 'none';
+            if(heatWarning) document.getElementById('heat-alert-text').innerText = `Temperaturas superiores a 30°C en las próximas 2 horas. (${heatDetails})`;
+
+            alertBoxCold.style.display = coldWarning ? 'block' : 'none';
+            if(coldWarning) document.getElementById('cold-alert-text').innerText = `Temperaturas bajo cero en las próximas 2 horas. (${coldDetails})`;
+
+            alertBoxWind.style.display = windWarning ? 'block' : 'none';
+            if(windWarning) document.getElementById('wind-alert-text').innerText = `Vientos superiores a 60 km/h en las próximas 2 horas. (${windDetails})`;
+
+
+            // Gráfico
             const sliceStart = Math.max(0, currentIndex - 6);
             const sliceEnd = Math.min(hourly.time.length, currentIndex + 42);
 
