@@ -65,7 +65,6 @@
       font-weight: 600;
     }
     
-    /* Nuevas Alertas CSS */
     #heat-alert {
       display: none;
       border-left: 5px solid #fd7e14; /* Naranja */
@@ -246,7 +245,47 @@
     </div>
 
     <div id="widget-sections" class="row">
+
+        <div class="col-12 mb-4 widget-wrapper" data-location="todos">
+            <div class="card h-100">
+                <div class="card-header">Pronóstico General (Meteoblue)</div>
+                <div class="card-body p-0">
+                    <iframe src="https://www.meteoblue.com/es/tiempo/widget/meteogram/?geoloc=detect&temperature_units=CELSIUS&windspeed_units=KILOMETER_PER_HOUR&precipitation_units=MILLIMETER&forecast_days=4&layout=bright&autowidth=auto&user_key=9940c18ca8937271&embed_key=237fdeca7a8b63f6&sig=80a15691ae58e5ff5f083831e7448950855998ab58be681514c357563d980b58" frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox" style="width: 100%;height: 350px;border: 0;overflow: hidden;"></iframe>
+                    <div class="text-center p-2 small bg-light"><a href="https://www.meteoblue.com/es/tiempo/semana/index" target="_blank" rel="noopener">meteoblue</a></div>
+                </div>
+            </div>
+        </div>
         
+        <div class="col-12 mb-4 widget-wrapper" data-location="solymar">
+            <div class="card h-100">
+                <div class="card-header">Windguru (Solymar)</div>
+                <div class="card-body text-center overflow-auto">
+                    <script id="wg_fwdg_313166_29_1770925276942">
+                    (function (window, document) {
+                      var loader = function () {
+                        var arg = ["s=313166" ,"m=29","uid=wg_fwdg_313166_29_1770925276942" ,"ai=0" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"p=WINDSPD,GUST,TMPE,TCDC,APCP1s,RH"];
+                        var script = document.createElement("script");
+                        var tag = document.getElementsByTagName("script")[0];
+                        script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
+                        tag.parentNode.insertBefore(script, tag);
+                      };
+                      window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+                    })(window, document);
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mb-4 widget-wrapper" data-location="solymar">
+            <div class="card h-100">
+                <div class="card-header">Meteograma (Solymar)</div>
+                <div class="card-body p-0">
+                   <iframe src="https://www.meteoblue.com/es/tiempo/widget/meteogram/solymar_uruguay_7838845?geoloc=fixed&temperature_units=CELSIUS&windspeed_units=KILOMETER_PER_HOUR&precipitation_units=MILLIMETER&forecast_days=4&layout=bright&autowidth=auto&user_key=9940c18ca8937271&embed_key=f2856e5512590108&sig=c5d3ed447f89eeba7e3b40d216e88f39fe5c0b452e7f094a6f3cae404794e8b0" frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox" style="width: 100%;height: 350px;border: 0;overflow: hidden;"></iframe>
+                   <div class="text-center p-2 small bg-light"><a href="https://www.meteoblue.com/es/tiempo/semana/index" target="_blank" rel="noopener">meteoblue</a></div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-lg-6 mb-4">
             <div class="card h-100">
                 <div class="card-header">Mapa Sinóptico (Viento/Temp)</div>
@@ -264,26 +303,6 @@
                 </div>
                 <div class="card-body p-0 d-flex align-items-center justify-content-center bg-black">
                     <img id="goes-gif" src="https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/ssa/GEOCOLOR/GOES19-SSA-GEOCOLOR-900x540.gif" alt="Satélite GOES-19" class="img-fluid" style="max-height: 400px; width: auto;">
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6 mb-4 widget-wrapper" data-location="solymar">
-            <div class="card h-100">
-                <div class="card-header">Windguru (Solymar)</div>
-                <div class="card-body text-center overflow-auto">
-                    <script id="wg_fwdg_313166_29_1770925276942">
-                    (function (window, document) {
-                      var loader = function () {
-                        var arg = ["s=313166" ,"m=29","uid=wg_fwdg_313166_29_1770925276942" ,"ai=0" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"p=WINDSPD,GUST,TMPE,TCDC,APCP1s,RH"];
-                        var script = document.createElement("script");
-                        var tag = document.getElementsByTagName("script")[0];
-                        script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
-                        tag.parentNode.insertBefore(script, tag);
-                      };
-                      window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
-                    })(window, document);
-                    </script>
                 </div>
             </div>
         </div>
@@ -360,14 +379,14 @@
         function updateDashboard() {
             const selectedKey = selector.value;
             
-            // 1. Filtrar Widgets (Windguru solo para MVD/Solymar)
+            // 1. Filtrar Widgets
             widgets.forEach(widget => {
                 if (!widget.hasAttribute('data-location')) return;
                 const locations = widget.getAttribute('data-location').split(' ');
 
-                if (selectedKey === 'todos') {
-                    widget.style.display = 'none'; 
-                } else if (locations.includes(selectedKey)) {
+                // AHORA: Si la ubicación seleccionada está en la lista del widget, se muestra.
+                // Esto funciona tanto para ciudades específicas como para "todos".
+                if (locations.includes(selectedKey)) {
                     widget.style.display = 'block';
                 } else {
                     widget.style.display = 'none';
