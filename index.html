@@ -149,7 +149,7 @@
         <i class="fa-solid fa-snowflake fa-2x me-3 text-primary"></i>
         <div>
           <h5 class="alert-heading mb-0">¡Alerta de Frío Extremo!</h5>
-          <p class="mb-0" id="cold-alert-text">Temperaturas bajo cero próximas.</p>
+          <p class="mb-0" id="cold-alert-text">Temperaturas gélidas próximas.</p>
         </div>
       </div>
     </div>
@@ -499,14 +499,14 @@
                     heatWarning = true;
                     heatDetails = `Pico estimado: ${temp}°C`;
                 }
-                if (temp < 0) {
+                if (temp < 10) {
                     coldWarning = true;
                     coldDetails = `Mínima estimada: ${temp}°C`;
                 }
                 
-                // Viento (> 60 km/h)
+                // Viento (> 30 km/h)
                 let wind = hourly.wind_speed_10m[idx];
-                if (wind > 60) {
+                if (wind > 30) {
                     windWarning = true;
                     windDetails = `Ráfagas: ${wind} km/h`;
                 }
@@ -520,10 +520,10 @@
             if(heatWarning) document.getElementById('heat-alert-text').innerText = `Temperaturas superiores a 30°C en las próximas 2 horas. (${heatDetails})`;
 
             alertBoxCold.style.display = coldWarning ? 'block' : 'none';
-            if(coldWarning) document.getElementById('cold-alert-text').innerText = `Temperaturas bajo cero en las próximas 2 horas. (${coldDetails})`;
+            if(coldWarning) document.getElementById('cold-alert-text').innerText = `Temperaturas gélidas en las próximas 2 horas. (${coldDetails})`;
 
             alertBoxWind.style.display = windWarning ? 'block' : 'none';
-            if(windWarning) document.getElementById('wind-alert-text').innerText = `Vientos superiores a 60 km/h en las próximas 2 horas. (${windDetails})`;
+            if(windWarning) document.getElementById('wind-alert-text').innerText = `Vientos superiores a 30 km/h en las próximas 2 horas. (${windDetails})`;
 
 
             // Gráfico
