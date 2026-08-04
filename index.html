@@ -337,9 +337,8 @@
   </div>
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -369,7 +368,8 @@
             'todos': { lat: -34.82, lon: -55.95, name: 'General' } 
         };
 
-        let myChart = null; 
+        let myChart = null;
+        let requestId = 0;
 
         // --- 1. Lógica del Filtro y Actualización ---
         const selector = document.getElementById('location-selector');
@@ -423,12 +423,17 @@
             document.getElementById('current-temp-badge').innerText = "Cargando...";
             document.getElementById('current-temp-badge').className = "badge bg-secondary rounded-pill";
 
+            const thisRequestId = ++requestId;
+
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
+                    // Ignorar respuestas de una localidad ya no seleccionada (fetch fuera de orden)
+                    if (thisRequestId !== requestId) return;
                     processWeatherData(data);
                 })
                 .catch(error => {
+                    if (thisRequestId !== requestId) return;
                     console.error("Error API:", error);
                     document.getElementById('current-temp-badge').innerText = "Error";
                     document.getElementById('current-temp-badge').className = "badge bg-danger rounded-pill";
@@ -453,7 +458,7 @@
             const currentWind = hourly.wind_speed_10m[currentIndex];
             const currentHum = hourly.relative_humidity_2m[currentIndex];
             const currentPress = hourly.pressure_msl[currentIndex];
-            const maxUvToday = data.daily.uv_index_max[1] || data.daily.uv_index_max[0]; 
+            const maxUvToday = data.daily.uv_index_max[1] ?? data.daily.uv_index_max[0];
 
             document.getElementById('current-temp-badge').innerText = `Ahora: ${currentTemp}°C`;
             document.getElementById('current-temp-badge').className = "badge bg-primary rounded-pill";

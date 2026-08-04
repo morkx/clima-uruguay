@@ -46,7 +46,7 @@ Este proyecto es una aplicación estática (Static Web App), por lo que no requi
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone [https://github.com/morkx/clima-uruguay.git](https://github.com/morkx/clima-uruguay.git)
+    git clone https://github.com/morkx/clima-uruguay.git
     cd clima-uruguay
     ```
 
@@ -69,4 +69,5 @@ Las coordenadas por defecto están configuradas para la zona de **Ciudad de la C
 Para modificar la ubicación de la API principal, edita la variable `apiUrl` en `index.html`:
 
 ```javascript
-const apiUrl = "[https://api.open-meteo.com/v1/forecast?latitude=TUA_LATITUD&longitude=TU_LONGITUD](https://api.open-meteo.com/v1/forecast?latitude=TUA_LATITUD&longitude=TU_LONGITUD)&...";
+const apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=TU_LATITUD&longitude=TU_LONGITUD&...";
+```
