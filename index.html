@@ -334,6 +334,7 @@
   <div class="container text-center">
     <p class="mb-1">&copy; 2026 Clima Uruguay.</p>
     <small>Datos provistos por Open-Meteo API, Windguru, Windy & NOAA.</small>
+    <div><small class="text-muted" id="last-modified"></small></div>
   </div>
 </footer>
 
@@ -613,6 +614,13 @@
 
         // Inicializar Dashboard
         updateDashboard();
+
+        // --- 4. Fecha de última modificación de la página ---
+        const lastModifiedEl = document.getElementById('last-modified');
+        if (lastModifiedEl) {
+            const lastModifiedDate = new Date(document.lastModified);
+            lastModifiedEl.textContent = `Página actualizada por última vez: ${lastModifiedDate.toLocaleDateString('es-UY')} ${lastModifiedDate.toLocaleTimeString('es-UY')}`;
+        }
     });
 </script>
 </body>
