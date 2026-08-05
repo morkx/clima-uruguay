@@ -217,6 +217,43 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="card h-100">
+                <div class="card-header">
+                    <i class="fa-solid fa-layer-group me-2 text-primary"></i>Resumen General <span class="text-muted fw-normal">(Próximas 24h)</span>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center g-3 align-items-center">
+                        <div class="col-6 col-md-3">
+                            <i id="summary-icon" class="fa-solid fa-cloud-sun fa-2x text-primary"></i>
+                            <div class="small text-muted mt-1" id="summary-condition">Cargando...</div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="fw-bold fs-5" id="summary-temp-range">-- / --°C</div>
+                            <div class="small text-muted">Mín / Máx</div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="fw-bold fs-5" id="summary-rain">--%</div>
+                            <div class="small text-muted">Consenso de lluvia</div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="fw-bold fs-5" id="summary-wind">-- km/h</div>
+                            <div class="small text-muted">Viento máx</div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-center gap-4 small text-muted">
+                        <span><i class="fa-solid fa-sun me-1 text-warning"></i>Amanecer: <span id="summary-sunrise">--:--</span></span>
+                        <span><i class="fa-solid fa-moon me-1"></i>Atardecer: <span id="summary-sunset">--:--</span></span>
+                    </div>
+                    <p class="mt-3 mb-0 text-center" id="summary-text">Cargando resumen consolidado...</p>
+                    <p class="mt-1 mb-0 text-center"><small class="text-muted" id="summary-source"></small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span id="chart-title"><i class="fa-solid fa-chart-line me-2 text-primary"></i>Pronóstico: Solymar</span>
                     <span class="badge bg-primary rounded-pill" id="current-temp-badge">Cargando...</span>
@@ -334,7 +371,7 @@
   <div class="container text-center">
     <p class="mb-1">&copy; 2026 Clima Uruguay.</p>
     <small>Datos provistos por Open-Meteo API, Windguru, Windy & NOAA.</small>
-    <div><small class="text-muted" id="last-modified"></small></div>
+    <div><small class="text-muted">Página actualizada por última vez: 05/08/2026 00:19</small></div>
   </div>
 </footer>
 
@@ -371,6 +408,9 @@
 
         let myChart = null;
         let requestId = 0;
+
+        // Modelos meteorológicos que se promedian para el Resumen General
+        const CONSENSUS_MODELS = ['ecmwf_ifs025', 'gfs_seamless', 'icon_seamless', 'gem_seamless'];
 
         // --- 1. Lógica del Filtro y Actualización ---
         const selector = document.getElementById('location-selector');
@@ -419,19 +459,26 @@
 
         // --- 2. Función Datos Open-Meteo ---
         function fetchWeatherData(lat, lon) {
+            // Pronóstico principal (best_match): alimenta el gráfico, las alertas y los valores "actuales"
             const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=sunset,sunrise,uv_index_max&hourly=temperature_2m,rain,precipitation_probability,relative_humidity_2m,pressure_msl,wind_speed_10m&timezone=auto&past_days=1&forecast_days=3`;
+
+            // Multi-modelo: solo para promediar el Resumen General entre varias fuentes de pronóstico
+            const modelsUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,rain,wind_speed_10m&models=${CONSENSUS_MODELS.join(',')}&timezone=auto&past_days=1&forecast_days=3`;
 
             document.getElementById('current-temp-badge').innerText = "Cargando...";
             document.getElementById('current-temp-badge').className = "badge bg-secondary rounded-pill";
 
             const thisRequestId = ++requestId;
 
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
+            Promise.all([
+                fetch(apiUrl).then(response => response.json()),
+                // El consolidado multi-modelo es "best effort": si falla, el resto del dashboard sigue funcionando
+                fetch(modelsUrl).then(response => response.json()).catch(() => null)
+            ])
+                .then(([data, modelsData]) => {
                     // Ignorar respuestas de una localidad ya no seleccionada (fetch fuera de orden)
                     if (thisRequestId !== requestId) return;
-                    processWeatherData(data);
+                    processWeatherData(data, modelsData);
                 })
                 .catch(error => {
                     if (thisRequestId !== requestId) return;
@@ -441,7 +488,7 @@
                 });
         }
 
-        function processWeatherData(data) {
+        function processWeatherData(data, modelsData) {
             const hourly = data.hourly;
             const now = new Date();
             let currentIndex = 0;
@@ -531,6 +578,108 @@
             alertBoxWind.style.display = windWarning ? 'block' : 'none';
             if(windWarning) document.getElementById('wind-alert-text').innerText = `Vientos superiores a 30 km/h en las próximas 2 horas. (${windDetails})`;
 
+            // --- RESUMEN GENERAL: promedio/consenso entre varios modelos meteorológicos ---
+            const summaryEnd = Math.min(hourly.time.length, currentIndex + 24);
+
+            const mHourly = modelsData && modelsData.hourly;
+            let modelsUsed = 0;
+            let minTemp, maxTemp, maxWind, rainConsensusPct;
+
+            if (mHourly && Array.isArray(mHourly.time)) {
+                // El índice "ahora" puede diferir levemente entre los dos fetch; se ubica de nuevo
+                let modelsCurrentIndex = mHourly.time.findIndex(t => t.startsWith(currentIsoHour));
+                if (modelsCurrentIndex === -1) modelsCurrentIndex = currentIndex;
+                const modelsSummaryEnd = Math.min(mHourly.time.length, modelsCurrentIndex + 24);
+
+                const tempSeries = CONSENSUS_MODELS.map(m => mHourly[`temperature_2m_${m}`]).filter(Array.isArray);
+                const windSeries = CONSENSUS_MODELS.map(m => mHourly[`wind_speed_10m_${m}`]).filter(Array.isArray);
+                const rainSeries = CONSENSUS_MODELS.map(m => mHourly[`rain_${m}`]).filter(Array.isArray);
+                modelsUsed = tempSeries.length;
+
+                minTemp = Infinity;
+                maxTemp = -Infinity;
+                maxWind = 0;
+                let maxRainingModels = 0;
+
+                for (let k = modelsCurrentIndex; k < modelsSummaryEnd; k++) {
+                    const tempsAtK = tempSeries.map(arr => arr[k]).filter(v => typeof v === 'number');
+                    if (tempsAtK.length) {
+                        const avgTemp = tempsAtK.reduce((a, b) => a + b, 0) / tempsAtK.length;
+                        minTemp = Math.min(minTemp, avgTemp);
+                        maxTemp = Math.max(maxTemp, avgTemp);
+                    }
+
+                    const windsAtK = windSeries.map(arr => arr[k]).filter(v => typeof v === 'number');
+                    if (windsAtK.length) {
+                        const avgWind = windsAtK.reduce((a, b) => a + b, 0) / windsAtK.length;
+                        maxWind = Math.max(maxWind, avgWind);
+                    }
+
+                    // Consenso de lluvia: cuántos modelos predicen lluvia (>0.1mm) en esa hora
+                    const rainingModels = rainSeries.filter(arr => (arr[k] ?? 0) > 0.1).length;
+                    maxRainingModels = Math.max(maxRainingModels, rainingModels);
+                }
+
+                rainConsensusPct = rainSeries.length ? Math.round((maxRainingModels / rainSeries.length) * 100) : 0;
+            }
+
+            // Si el fetch multi-modelo falló o no trajo datos usables, se cae al pronóstico principal
+            if (!modelsUsed || !isFinite(minTemp) || !isFinite(maxTemp)) {
+                minTemp = hourly.temperature_2m[currentIndex];
+                maxTemp = hourly.temperature_2m[currentIndex];
+                maxWind = 0;
+                let maxRainProb = 0;
+                for (let k = currentIndex; k < summaryEnd; k++) {
+                    minTemp = Math.min(minTemp, hourly.temperature_2m[k]);
+                    maxTemp = Math.max(maxTemp, hourly.temperature_2m[k]);
+                    maxRainProb = Math.max(maxRainProb, hourly.precipitation_probability[k]);
+                    maxWind = Math.max(maxWind, hourly.wind_speed_10m[k]);
+                }
+                rainConsensusPct = Math.round(maxRainProb);
+                modelsUsed = 0;
+            }
+
+            let summaryCondition, summaryIcon;
+            if (rainConsensusPct >= 50) {
+                summaryCondition = 'Lluvia probable';
+                summaryIcon = 'fa-cloud-showers-heavy';
+            } else if (rainConsensusPct >= 20) {
+                summaryCondition = 'Posibles chaparrones';
+                summaryIcon = 'fa-cloud-sun-rain';
+            } else if (maxTemp >= 28) {
+                summaryCondition = 'Despejado y caluroso';
+                summaryIcon = 'fa-sun';
+            } else {
+                summaryCondition = 'Mayormente despejado';
+                summaryIcon = 'fa-cloud-sun';
+            }
+
+            document.getElementById('summary-icon').className = `fa-solid ${summaryIcon} fa-2x text-primary`;
+            document.getElementById('summary-condition').innerText = summaryCondition;
+            document.getElementById('summary-temp-range').innerText = `${Math.round(minTemp)}° / ${Math.round(maxTemp)}°C`;
+            document.getElementById('summary-rain').innerText = `${rainConsensusPct}%`;
+            document.getElementById('summary-wind').innerText = `${Math.round(maxWind)} km/h`;
+            document.getElementById('summary-source').innerText = modelsUsed
+                ? `Promedio de ${modelsUsed} modelos (ECMWF, GFS, ICON, GEM)`
+                : 'Fuente única (consolidado no disponible)';
+
+            // Amanecer/Atardecer de hoy (índice 1: 0=ayer, 1=hoy, por past_days=1)
+            const todaySunrise = new Date(data.daily.sunrise[1] || data.daily.sunrise[0]);
+            const todaySunset = new Date(data.daily.sunset[1] || data.daily.sunset[0]);
+            const timeFmt = { hour: '2-digit', minute: '2-digit' };
+            document.getElementById('summary-sunrise').innerText = todaySunrise.toLocaleTimeString('es-UY', timeFmt);
+            document.getElementById('summary-sunset').innerText = todaySunset.toLocaleTimeString('es-UY', timeFmt);
+
+            const activeAlerts = [];
+            if (rainWarning) activeAlerts.push('lluvia inminente');
+            if (heatWarning) activeAlerts.push('calor extremo');
+            if (coldWarning) activeAlerts.push('frío extremo');
+            if (windWarning) activeAlerts.push('vientos fuertes');
+            const alertsSuffix = activeAlerts.length ? ` Atención: se esperan ${activeAlerts.join(', ')} en las próximas horas.` : '';
+
+            const sourceNote = modelsUsed ? ` (promedio de ${modelsUsed} modelos)` : '';
+            document.getElementById('summary-text').innerText =
+                `${summaryCondition} en las próximas 24hs${sourceNote}, con temperaturas entre ${Math.round(minTemp)}° y ${Math.round(maxTemp)}°C y viento de hasta ${Math.round(maxWind)} km/h.${alertsSuffix}`;
 
             // Gráfico
             const sliceStart = Math.max(0, currentIndex - 6);
@@ -614,13 +763,6 @@
 
         // Inicializar Dashboard
         updateDashboard();
-
-        // --- 4. Fecha de última modificación de la página ---
-        const lastModifiedEl = document.getElementById('last-modified');
-        if (lastModifiedEl) {
-            const lastModifiedDate = new Date(document.lastModified);
-            lastModifiedEl.textContent = `Página actualizada por última vez: ${lastModifiedDate.toLocaleDateString('es-UY')} ${lastModifiedDate.toLocaleTimeString('es-UY')}`;
-        }
     });
 </script>
 </body>
