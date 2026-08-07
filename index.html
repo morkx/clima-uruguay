@@ -245,6 +245,7 @@
                         <span><i class="fa-solid fa-moon me-1"></i>Atardecer: <span id="summary-sunset">--:--</span></span>
                     </div>
                     <p class="mt-3 mb-0 text-center" id="summary-text">Cargando resumen consolidado...</p>
+                    <p class="mt-2 mb-0 text-center fst-italic" id="summary-slang"></p>
                     <p class="mt-1 mb-0 text-center"><small class="text-muted" id="summary-source"></small></p>
                 </div>
             </div>
@@ -301,6 +302,66 @@
                     (function (window, document) {
                       var loader = function () {
                         var arg = ["s=313166" ,"m=29","uid=wg_fwdg_313166_29_1770925276942" ,"ai=0" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"p=WINDSPD,GUST,TMPE,TCDC,APCP1s,RH"];
+                        var script = document.createElement("script");
+                        var tag = document.getElementsByTagName("script")[0];
+                        script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
+                        tag.parentNode.insertBefore(script, tag);
+                      };
+                      window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+                    })(window, document);
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mb-4 widget-wrapper" data-location="maldonado">
+            <div class="card h-100">
+                <div class="card-header">Windguru (Punta del Este / Maldonado)</div>
+                <div class="card-body text-center overflow-auto">
+                    <script id="wg_fwdg_32723_29_1786000000001">
+                    (function (window, document) {
+                      var loader = function () {
+                        var arg = ["s=32723" ,"m=29","uid=wg_fwdg_32723_29_1786000000001" ,"ai=0" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"p=WINDSPD,GUST,TMPE,TCDC,APCP1s,RH"];
+                        var script = document.createElement("script");
+                        var tag = document.getElementsByTagName("script")[0];
+                        script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
+                        tag.parentNode.insertBefore(script, tag);
+                      };
+                      window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+                    })(window, document);
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mb-4 widget-wrapper" data-location="rocha">
+            <div class="card h-100">
+                <div class="card-header">Windguru (Rocha / La Paloma)</div>
+                <div class="card-body text-center overflow-auto">
+                    <script id="wg_fwdg_66252_29_1786000000002">
+                    (function (window, document) {
+                      var loader = function () {
+                        var arg = ["s=66252" ,"m=29","uid=wg_fwdg_66252_29_1786000000002" ,"ai=0" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"p=WINDSPD,GUST,TMPE,TCDC,APCP1s,RH"];
+                        var script = document.createElement("script");
+                        var tag = document.getElementsByTagName("script")[0];
+                        script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
+                        tag.parentNode.insertBefore(script, tag);
+                      };
+                      window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+                    })(window, document);
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mb-4 widget-wrapper" data-location="colonia">
+            <div class="card h-100">
+                <div class="card-header">Windguru (Colonia del Sacramento)</div>
+                <div class="card-body text-center overflow-auto">
+                    <script id="wg_fwdg_54053_29_1786000000003">
+                    (function (window, document) {
+                      var loader = function () {
+                        var arg = ["s=54053" ,"m=29","uid=wg_fwdg_54053_29_1786000000003" ,"ai=0" ,"wj=knots" ,"tj=c" ,"waj=m" ,"tij=cm" ,"odh=0" ,"doh=24" ,"fhours=240" ,"hrsm=2" ,"vt=forecasts" ,"lng=es" ,"p=WINDSPD,GUST,TMPE,TCDC,APCP1s,RH"];
                         var script = document.createElement("script");
                         var tag = document.getElementsByTagName("script")[0];
                         script.src = "https://www.windguru.cz/js/widget.php?"+(arg.join("&"));
@@ -412,6 +473,62 @@
         // Modelos meteorológicos que se promedian para el Resumen General
         const CONSENSUS_MODELS = ['ecmwf_ifs025', 'gfs_seamless', 'icon_seamless', 'gem_seamless'];
 
+        // --- Pronóstico "en criollo": frases bizarras según qué tan extremo esté el día ---
+        const SLANG_PHRASES = {
+            frioExtremo: [
+                'Un frío de cagarse, sacá el ropero entero.',
+                'Hace un frío que ni el perro sale a la vereda.',
+                'Frío que te cala hasta el documento.'
+            ],
+            calorExtremo: [
+                'Un calor de la gran siete.',
+                'Hace un calor que te derrite el asado antes de prenderlo.',
+                'Calor como para vivir adentro del freezer.'
+            ],
+            vientoExtremo: [
+                'Un viento que te vuela el copete.',
+                'Ventarrón como para salir volando con paraguas y todo.',
+                'Viento que te despeina hasta el alma.'
+            ],
+            lluvia: [
+                'Se viene un chaparrón de laburo, no cuelgues la ropa.',
+                'Agarrá el paraguas que hoy llueve como para lavar el auto gratis.',
+                'Día de charco garantizado, ponete los borcegos.'
+            ],
+            frio: [
+                'Fresquito, sacá la campera y la bufanda.',
+                'Día para el mate calentito y no salir mucho.'
+            ],
+            calor: [
+                'Solcito pesado, mejor la sombra al mediodía.',
+                'Día para el ventilador prendido todo el día.'
+            ],
+            viento: [
+                'Corre un vientito que te despeina.',
+                'Aguantá el sombrero que hoy sopla.'
+            ],
+            tranquilo: [
+                'Día de esos para no hacer nada y disfrutar.',
+                'Clima de terraza y asadito con los gurises.',
+                'Nada raro por hoy, tranqui total.'
+            ]
+        };
+
+        function getSlangForecast(minTemp, maxTemp, maxWind, rainConsensusPct) {
+            let category;
+            if (minTemp <= 3) category = 'frioExtremo';
+            else if (maxTemp >= 32) category = 'calorExtremo';
+            else if (maxWind >= 45) category = 'vientoExtremo';
+            else if (rainConsensusPct > 50) category = 'lluvia';
+            else if (minTemp <= 9) category = 'frio';
+            else if (maxTemp >= 28) category = 'calor';
+            else if (maxWind >= 28) category = 'viento';
+            else category = 'tranquilo';
+
+            const options = SLANG_PHRASES[category];
+            return options[Math.floor(Math.random() * options.length)];
+        }
+
         // --- 1. Lógica del Filtro y Actualización ---
         const selector = document.getElementById('location-selector');
         const widgets = document.querySelectorAll('.widget-wrapper');
@@ -460,7 +577,7 @@
         // --- 2. Función Datos Open-Meteo ---
         function fetchWeatherData(lat, lon) {
             // Pronóstico principal (best_match): alimenta el gráfico, las alertas y los valores "actuales"
-            const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=sunset,sunrise,uv_index_max&hourly=temperature_2m,rain,precipitation_probability,relative_humidity_2m,pressure_msl,wind_speed_10m&timezone=auto&past_days=1&forecast_days=3`;
+            const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=sunset,sunrise,uv_index_max&hourly=temperature_2m,rain,precipitation_probability,relative_humidity_2m,pressure_msl,wind_speed_10m,cloud_cover&timezone=auto&past_days=1&forecast_days=3`;
 
             // Multi-modelo: solo para promediar el Resumen General entre varias fuentes de pronóstico
             const modelsUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,rain,wind_speed_10m&models=${CONSENSUS_MODELS.join(',')}&timezone=auto&past_days=1&forecast_days=3`;
@@ -639,19 +756,35 @@
                 modelsUsed = 0;
             }
 
+            // Cobertura de nubes promedio de la ventana (independiente de la lluvia)
+            let cloudSum = 0;
+            let cloudCount = 0;
+            for (let k = currentIndex; k < summaryEnd; k++) {
+                const cc = hourly.cloud_cover ? hourly.cloud_cover[k] : undefined;
+                if (typeof cc === 'number') {
+                    cloudSum += cc;
+                    cloudCount++;
+                }
+            }
+            const avgCloudCover = cloudCount ? cloudSum / cloudCount : null;
+
             let summaryCondition, summaryIcon;
-            if (rainConsensusPct >= 50) {
+            if (rainConsensusPct > 50) {
                 summaryCondition = 'Lluvia probable';
                 summaryIcon = 'fa-cloud-showers-heavy';
-            } else if (rainConsensusPct >= 20) {
-                summaryCondition = 'Posibles chaparrones';
-                summaryIcon = 'fa-cloud-sun-rain';
-            } else if (maxTemp >= 28) {
-                summaryCondition = 'Despejado y caluroso';
+            } else if (avgCloudCover === null) {
+                // Sin dato de nubosidad: fallback al criterio anterior basado solo en temperatura
+                summaryCondition = maxTemp >= 28 ? 'Despejado y caluroso' : 'Mayormente despejado';
+                summaryIcon = maxTemp >= 28 ? 'fa-sun' : 'fa-cloud-sun';
+            } else if (avgCloudCover < 30) {
+                summaryCondition = maxTemp >= 28 ? 'Soleado y caluroso' : 'Soleado y despejado';
                 summaryIcon = 'fa-sun';
-            } else {
-                summaryCondition = 'Mayormente despejado';
+            } else if (avgCloudCover < 70) {
+                summaryCondition = 'Parcialmente nublado';
                 summaryIcon = 'fa-cloud-sun';
+            } else {
+                summaryCondition = 'Nuboso / Cubierto';
+                summaryIcon = 'fa-cloud';
             }
 
             document.getElementById('summary-icon').className = `fa-solid ${summaryIcon} fa-2x text-primary`;
@@ -662,6 +795,7 @@
             document.getElementById('summary-source').innerText = modelsUsed
                 ? `Promedio de ${modelsUsed} modelos (ECMWF, GFS, ICON, GEM)`
                 : 'Fuente única (consolidado no disponible)';
+            document.getElementById('summary-slang').innerText = '"' + getSlangForecast(minTemp, maxTemp, maxWind, rainConsensusPct) + '"';
 
             // Amanecer/Atardecer de hoy (índice 1: 0=ayer, 1=hoy, por past_days=1)
             const todaySunrise = new Date(data.daily.sunrise[1] || data.daily.sunrise[0]);
