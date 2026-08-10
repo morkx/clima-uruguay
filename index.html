@@ -476,32 +476,32 @@
         // --- Pronóstico "en criollo": frases bizarras según qué tan extremo esté el día ---
         const SLANG_PHRASES = {
             frioExtremo: [
-                'Un frío de cagarse, sacá el ropero entero.',
-                'Hace un frío que ni el perro sale a la vereda.',
-                'Frío que te cala hasta el documento.'
+                'Un frío de cagarse.',
+                'Hace un frío como para dejar el perro en la cucha.',
+                'A vos te gustaba el invierno?.'
             ],
             calorExtremo: [
-                'Un calor de la gran siete.',
-                'Hace un calor que te derrite el asado antes de prenderlo.',
-                'Calor como para vivir adentro del freezer.'
+                'Un calor de la concha de la lora.',
+                'Te va a sudar el perineo.',
+                'Te gustaba el verano.'
             ],
             vientoExtremo: [
                 'Un viento que te vuela el copete.',
-                'Ventarrón como para salir volando con paraguas y todo.',
-                'Viento que te despeina hasta el alma.'
+                'Se te vuelan los parientes.',
+                'Viento de la gran flauta.'
             ],
             lluvia: [
-                'Se viene un chaparrón de laburo, no cuelgues la ropa.',
+                'Entrá la ropa!!!,'
                 'Agarrá el paraguas que hoy llueve como para lavar el auto gratis.',
-                'Día de charco garantizado, ponete los borcegos.'
+                'Llevate la canoa porque se viene el agua.'
             ],
             frio: [
-                'Fresquito, sacá la campera y la bufanda.',
-                'Día para el mate calentito y no salir mucho.'
+                'Fresquito, como para pasear abrigado.',
+                'Frio como culo de pingüino.'
             ],
             calor: [
-                'Solcito pesado, mejor la sombra al mediodía.',
-                'Día para el ventilador prendido todo el día.'
+                'Solcito pesado.',
+                'Alguien dejó abierto el horno.'
             ],
             viento: [
                 'Corre un vientito que te despeina.',
@@ -514,6 +514,11 @@
             ]
         };
 
+        function randomSlangPhrase(category) {
+            const options = SLANG_PHRASES[category];
+            return options[Math.floor(Math.random() * options.length)];
+        }
+
         function getSlangForecast(minTemp, maxTemp, maxWind, rainConsensusPct) {
             let category;
             if (minTemp <= 3) category = 'frioExtremo';
@@ -525,8 +530,7 @@
             else if (maxWind >= 28) category = 'viento';
             else category = 'tranquilo';
 
-            const options = SLANG_PHRASES[category];
-            return options[Math.floor(Math.random() * options.length)];
+            return randomSlangPhrase(category);
         }
 
         // --- 1. Lógica del Filtro y Actualización ---
@@ -684,16 +688,16 @@
 
             // Mostrar/Ocultar Alertas
             alertBoxRain.style.display = rainWarning ? 'block' : 'none';
-            if(rainWarning) document.getElementById('rain-alert-text').innerText = `Se detecta lluvia en las próximas 2 horas. (${rainDetails})`;
+            if(rainWarning) document.getElementById('rain-alert-text').innerText = `Se detecta lluvia en las próximas 2 horas. (${rainDetails}) — "${randomSlangPhrase('lluvia')}"`;
 
             alertBoxHeat.style.display = heatWarning ? 'block' : 'none';
-            if(heatWarning) document.getElementById('heat-alert-text').innerText = `Temperaturas superiores a 30°C en las próximas 2 horas. (${heatDetails})`;
+            if(heatWarning) document.getElementById('heat-alert-text').innerText = `Temperaturas superiores a 30°C en las próximas 2 horas. (${heatDetails}) — "${randomSlangPhrase('calorExtremo')}"`;
 
             alertBoxCold.style.display = coldWarning ? 'block' : 'none';
-            if(coldWarning) document.getElementById('cold-alert-text').innerText = `Temperaturas gélidas en las próximas 2 horas. (${coldDetails})`;
+            if(coldWarning) document.getElementById('cold-alert-text').innerText = `Temperaturas gélidas en las próximas 2 horas. (${coldDetails}) — "${randomSlangPhrase('frioExtremo')}"`;
 
             alertBoxWind.style.display = windWarning ? 'block' : 'none';
-            if(windWarning) document.getElementById('wind-alert-text').innerText = `Vientos superiores a 30 km/h en las próximas 2 horas. (${windDetails})`;
+            if(windWarning) document.getElementById('wind-alert-text').innerText = `Vientos superiores a 30 km/h en las próximas 2 horas. (${windDetails}) — "${randomSlangPhrase('vientoExtremo')}"`;
 
             // --- RESUMEN GENERAL: promedio/consenso entre varios modelos meteorológicos ---
             const summaryEnd = Math.min(hourly.time.length, currentIndex + 24);
