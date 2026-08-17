@@ -114,6 +114,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://www.inumet.gub.uy/" target="_blank" rel="noopener">INUMET (Oficial)</a></li>
       </ul>
     </div>
   </div>
@@ -384,6 +385,15 @@
             </div>
         </div>
 
+        <div class="col-lg-6 mb-4 widget-wrapper" data-location="solymar">
+            <div class="card h-100">
+                <div class="card-header">Weather and Radar</div>
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <iframe src="https://api.wo-cloud.com/content/widget/?geoObjectKey=65145896&language=es&region=US&timeFormat=HH:mm&windUnit=kmh&systemOfMeasurement=metric&temperatureUnit=celsius" name="CW2" scrolling="no" width="318" height="318" frameborder="0" style="border: 1px solid #10658E;border-radius: 8px"></iframe>
+                </div>
+            </div>
+        </div>
+
         <div class="col-lg-6 mb-4">
             <div class="card h-100">
                 <div class="card-header">Mapa Sinóptico (Viento/Temp)</div>
@@ -476,14 +486,14 @@
         // --- Pronóstico "en criollo": frases bizarras según qué tan extremo esté el día ---
         const SLANG_PHRASES = {
             frioExtremo: [
-                'Un frío de cagarse.',
-                'Hace un frío como para dejar el perro en la cucha.',
-                'Ya no te gusta el invierno.'
+                'Un frío de cagarse, sacá el ropero entero.',
+                'Hace un frío que ni el perro sale a la vereda.',
+                'Frío que te cala hasta el documento.'
             ],
             calorExtremo: [
                 'Un calor de la gran siete.',
-                'Hace un calor que te suda el perineo.',
-                'Ya no te gusta el verano.'
+                'Hace un calor que te derrite el asado antes de prenderlo.',
+                'Calor como para vivir adentro del freezer.'
             ],
             vientoExtremo: [
                 'Un viento que te vuela el copete.',
@@ -491,17 +501,17 @@
                 'Viento que te despeina hasta el alma.'
             ],
             lluvia: [
-                'Entrá la ropa!!!!',
+                'Se viene un chaparrón de laburo, no cuelgues la ropa.',
                 'Agarrá el paraguas que hoy llueve como para lavar el auto gratis.',
-                'Se viene el agua.'
+                'Día de charco garantizado, ponete los borcegos.'
             ],
             frio: [
                 'Fresquito, sacá la campera y la bufanda.',
-                'Día para abrigarse demasiado.'
+                'Día para el mate calentito y no salir mucho.'
             ],
             calor: [
                 'Solcito pesado, mejor la sombra al mediodía.',
-                'Vamo a la playa.'
+                'Día para el ventilador prendido todo el día.'
             ],
             viento: [
                 'Corre un vientito que te despeina.',
@@ -509,8 +519,8 @@
             ],
             tranquilo: [
                 'Día de esos para no hacer nada y disfrutar.',
-                'Clima de asadito al aire libre.',
-                'Día climaticamente aburrido.'
+                'Clima de terraza y asadito con los gurises.',
+                'Nada raro por hoy, tranqui total.'
             ]
         };
 
