@@ -4,6 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>El tiempo recopilado por Dr. Pachulo</title>
+  <meta name="description" content="Dashboard meteorológico en tiempo real para Uruguay: alertas tempranas de lluvia, calor, frío y viento, pronóstico por localidad y mapas en vivo de Windy, Windguru y satélite GOES-19.">
+  <meta property="og:title" content="Clima Uruguay — Dashboard meteorológico">
+  <meta property="og:description" content="Monitoreo del clima en Uruguay por localidad, con alertas tempranas y mapas en vivo.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://morkx.github.io/clima-uruguay/">
+  <meta property="og:image" content="https://morkx.github.io/clima-uruguay/img/favicon.ico">
+  <meta name="twitter:card" content="summary">
 
   <link rel="icon" href="img/favicon.ico">
   
@@ -289,7 +296,7 @@
             <div class="card h-100">
                 <div class="card-header">Pronóstico General (Meteoblue)</div>
                 <div class="card-body p-0">
-                    <iframe src="https://www.meteoblue.com/es/tiempo/widget/meteogram/?geoloc=detect&temperature_units=CELSIUS&windspeed_units=KILOMETER_PER_HOUR&precipitation_units=MILLIMETER&forecast_days=4&layout=bright&autowidth=auto&user_key=9940c18ca8937271&embed_key=237fdeca7a8b63f6&sig=80a15691ae58e5ff5f083831e7448950855998ab58be681514c357563d980b58" frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox" style="width: 100%;height: 350px;border: 0;overflow: hidden;"></iframe>
+                    <iframe src="https://www.meteoblue.com/es/tiempo/widget/meteogram/?geoloc=detect&temperature_units=CELSIUS&windspeed_units=KILOMETER_PER_HOUR&precipitation_units=MILLIMETER&forecast_days=4&layout=bright&autowidth=auto&user_key=9940c18ca8937271&embed_key=237fdeca7a8b63f6&sig=80a15691ae58e5ff5f083831e7448950855998ab58be681514c357563d980b58" title="Pronóstico general Meteoblue" loading="lazy" frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox" style="width: 100%;height: 350px;border: 0;overflow: hidden;"></iframe>
                     <div class="text-center p-2 small bg-light"><a href="https://www.meteoblue.com/es/tiempo/semana/index" target="_blank" rel="noopener">meteoblue</a></div>
                 </div>
             </div>
@@ -379,7 +386,7 @@
             <div class="card h-100">
                 <div class="card-header">Meteograma (Solymar)</div>
                 <div class="card-body p-0">
-                   <iframe src="https://www.meteoblue.com/es/tiempo/widget/meteogram/solymar_uruguay_7838845?geoloc=fixed&temperature_units=CELSIUS&windspeed_units=KILOMETER_PER_HOUR&precipitation_units=MILLIMETER&forecast_days=4&layout=bright&autowidth=auto&user_key=9940c18ca8937271&embed_key=f2856e5512590108&sig=c5d3ed447f89eeba7e3b40d216e88f39fe5c0b452e7f094a6f3cae404794e8b0" frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox" style="width: 100%;height: 350px;border: 0;overflow: hidden;"></iframe>
+                   <iframe src="https://www.meteoblue.com/es/tiempo/widget/meteogram/solymar_uruguay_7838845?geoloc=fixed&temperature_units=CELSIUS&windspeed_units=KILOMETER_PER_HOUR&precipitation_units=MILLIMETER&forecast_days=4&layout=bright&autowidth=auto&user_key=9940c18ca8937271&embed_key=f2856e5512590108&sig=c5d3ed447f89eeba7e3b40d216e88f39fe5c0b452e7f094a6f3cae404794e8b0" title="Meteograma Solymar" loading="lazy" frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox" style="width: 100%;height: 350px;border: 0;overflow: hidden;"></iframe>
                    <div class="text-center p-2 small bg-light"><a href="https://www.meteoblue.com/es/tiempo/semana/index" target="_blank" rel="noopener">meteoblue</a></div>
                 </div>
             </div>
@@ -389,7 +396,7 @@
             <div class="card h-100">
                 <div class="card-header">Weather and Radar</div>
                 <div class="card-body d-flex align-items-center justify-content-center">
-                    <iframe src="https://api.wo-cloud.com/content/widget/?geoObjectKey=65145896&language=es&region=US&timeFormat=HH:mm&windUnit=kmh&systemOfMeasurement=metric&temperatureUnit=celsius" name="CW2" scrolling="no" width="318" height="318" frameborder="0" style="border: 1px solid #10658E;border-radius: 8px"></iframe>
+                    <iframe src="https://api.wo-cloud.com/content/widget/?geoObjectKey=65145896&language=es&region=US&timeFormat=HH:mm&windUnit=kmh&systemOfMeasurement=metric&temperatureUnit=celsius" name="CW2" title="Weather and Radar Ciudad de la Costa" loading="lazy" scrolling="no" width="318" height="318" frameborder="0" style="border: 1px solid #10658E;border-radius: 8px"></iframe>
                 </div>
             </div>
         </div>
@@ -398,7 +405,7 @@
             <div class="card h-100">
                 <div class="card-header">Mapa Sinóptico (Viento/Temp)</div>
                 <div class="card-body p-0">
-                    <iframe id="windy-map-iframe" width="100%" height="400" src="" frameborder="0" style="border-radius: 0 0 12px 12px;"></iframe>
+                    <iframe id="windy-map-iframe" width="100%" height="400" src="" title="Mapa sinóptico Windy" frameborder="0" style="border-radius: 0 0 12px 12px;"></iframe>
                 </div>
             </div>
         </div>
@@ -410,7 +417,7 @@
                     <span class="badge bg-success rounded-pill">En Vivo</span>
                 </div>
                 <div class="card-body p-0 d-flex align-items-center justify-content-center bg-black">
-                    <img id="goes-gif" src="https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/ssa/GEOCOLOR/GOES19-SSA-GEOCOLOR-900x540.gif" alt="Satélite GOES-19" class="img-fluid" style="max-height: 400px; width: auto;">
+                    <img id="goes-gif" src="https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/ssa/GEOCOLOR/GOES19-SSA-GEOCOLOR-900x540.gif" alt="Satélite GOES-19" loading="lazy" class="img-fluid" style="max-height: 400px; width: auto;">
                 </div>
             </div>
         </div>
@@ -633,10 +640,10 @@
                 }
             }
 
-            const currentTemp = hourly.temperature_2m[currentIndex];
-            const currentWind = hourly.wind_speed_10m[currentIndex];
-            const currentHum = hourly.relative_humidity_2m[currentIndex];
-            const currentPress = hourly.pressure_msl[currentIndex];
+            const currentTemp = Math.round(hourly.temperature_2m[currentIndex]);
+            const currentWind = Math.round(hourly.wind_speed_10m[currentIndex]);
+            const currentHum = Math.round(hourly.relative_humidity_2m[currentIndex]);
+            const currentPress = Math.round(hourly.pressure_msl[currentIndex]);
             const maxUvToday = data.daily.uv_index_max[1] ?? data.daily.uv_index_max[0];
 
             document.getElementById('current-temp-badge').innerText = `Ahora: ${currentTemp}°C`;
