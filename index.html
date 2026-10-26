@@ -191,6 +191,8 @@
                         <option value="solymar">Ciudad de la Costa (Solymar)</option>
                         <option value="canelones">Canelones (Capital)</option>
                         <option value="sanjose">San José de Mayo</option>
+                        <option value="atlantida">Atlántida</option>
+                        <option value="laspiedras">Las Piedras</option>
                     </optgroup>
 
                     <optgroup label="Este">
@@ -198,6 +200,9 @@
                         <option value="rocha">Rocha</option>
                         <option value="treintaytres">Treinta y Tres</option>
                         <option value="lavalleja">Minas (Lavalleja)</option>
+                        <option value="piriapolis">Piriápolis</option>
+                        <option value="lapaloma">La Paloma</option>
+                        <option value="chuy">Chuy</option>
                     </optgroup>
 
                     <optgroup label="Litoral / Oeste">
@@ -207,6 +212,10 @@
                         <option value="paysandu">Paysandú</option>
                         <option value="salto">Salto</option>
                         <option value="artigas">Artigas</option>
+                        <option value="carmelo">Carmelo</option>
+                        <option value="dolores">Dolores</option>
+                        <option value="young">Young</option>
+                        <option value="bellaunion">Bella Unión</option>
                     </optgroup>
 
                     <optgroup label="Centro / Norte">
@@ -216,6 +225,7 @@
                         <option value="tacuarembo">Tacuarembó</option>
                         <option value="rivera">Rivera</option>
                         <option value="cerrolargo">Melo (Cerro Largo)</option>
+                        <option value="pasodelostoros">Paso de los Toros</option>
                     </optgroup>
                 </select>
             </div>
@@ -403,6 +413,18 @@
 
         <div class="col-lg-6 mb-4">
             <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="fa-solid fa-triangle-exclamation me-2 text-warning"></i>Advertencias INUMET (Oficial)</span>
+                    <a href="https://www.inumet.gub.uy/alerta" target="_blank" rel="noopener" class="small">Abrir en inumet.gub.uy</a>
+                </div>
+                <div class="card-body p-0">
+                    <iframe src="https://www.inumet.gub.uy/alerta" title="Advertencias oficiales INUMET" width="100%" height="420" frameborder="0" loading="lazy" style="border-radius: 0 0 12px 12px;"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
                 <div class="card-header">Mapa Sinóptico (Viento/Temp)</div>
                 <div class="card-body p-0">
                     <iframe id="windy-map-iframe" width="100%" height="400" src="" title="Mapa sinóptico Windy" frameborder="0" style="border-radius: 0 0 12px 12px;"></iframe>
@@ -481,7 +503,17 @@
             'durazno': { lat: -33.38, lon: -56.53, name: 'Durazno' },
             'tacuarembo': { lat: -31.71, lon: -55.98, name: 'Tacuarembó' },
             'lavalleja': { lat: -34.38, lon: -55.24, name: 'Minas' },
-            'todos': { lat: -34.82, lon: -55.95, name: 'General' } 
+            'atlantida': { lat: -34.78, lon: -55.76, name: 'Atlántida' },
+            'laspiedras': { lat: -34.72, lon: -56.22, name: 'Las Piedras' },
+            'piriapolis': { lat: -34.87, lon: -55.28, name: 'Piriápolis' },
+            'lapaloma': { lat: -34.66, lon: -54.14, name: 'La Paloma' },
+            'chuy': { lat: -33.70, lon: -53.46, name: 'Chuy' },
+            'carmelo': { lat: -33.99, lon: -58.28, name: 'Carmelo' },
+            'dolores': { lat: -33.55, lon: -58.21, name: 'Dolores' },
+            'young': { lat: -32.69, lon: -57.63, name: 'Young' },
+            'bellaunion': { lat: -30.25, lon: -57.60, name: 'Bella Unión' },
+            'pasodelostoros': { lat: -32.82, lon: -56.52, name: 'Paso de los Toros' },
+            'todos': { lat: -34.82, lon: -55.95, name: 'General' }
         };
 
         let myChart = null;
