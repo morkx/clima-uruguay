@@ -513,44 +513,48 @@
         // Modelos meteorológicos que se promedian para el Resumen General
         const CONSENSUS_MODELS = ['ecmwf_ifs025', 'gfs_seamless', 'icon_seamless', 'gem_seamless'];
 
-        // --- Pronóstico "en criollo": frases bizarras según qué tan extremo esté el día ---
+        // --- Pronóstico "en criollo": frases picarescas según qué tan extremo esté el día ---
         const SLANG_PHRASES = {
             frioExtremo: [
-                'Un frío de cagarse, sacá el ropero entero.',
-                'Hace un frío que ni el perro sale a la vereda.',
-                'Frío que te cala hasta el documento.'
+                'Un frío que pide abrazo doble, no hay excusa que valga.',
+                'Frío como para meterse bajo las frazadas temprano... acompañado mejor.',
+                'Un frío que te hace extrañar hasta al ex, con tal de entrar en calor.',
+                'Hace un frío que ni de a dos alcanza, hay que improvisar.'
             ],
             calorExtremo: [
-                'Un calor de la gran siete.',
-                'Hace un calor que te derrite el asado antes de prenderlo.',
-                'Calor como para vivir adentro del freezer.'
+                'Un calor que da para dormir en bolas y ni se nota la ropa de menos.',
+                'Calor como para tirar manta... pero de encima, no de abrigo.',
+                'Un calor que invita a la pileta, o a quedarse en la cama todo el día, vos decidís.',
+                'Hace un calor que hasta las ganas de laburar se evaporan primero que todo lo demás.'
             ],
             vientoExtremo: [
-                'Un viento que te vuela el copete.',
-                'Ventarrón como para salir volando con paraguas y todo.',
-                'Viento que te despeina hasta el alma.'
+                'Un viento que te levanta la pollera sin pedir permiso.',
+                'Ventarrón como para que el que tenga pollo bajo el poncho, lo pierda.',
+                'Un viento que deja a más de uno mostrando de más.',
+                'Viento que te desacomoda todo, hasta los planes de la noche.'
             ],
             lluvia: [
-                'Se viene un chaparrón de laburo, no cuelgues la ropa.',
-                'Agarrá el paraguas que hoy llueve como para lavar el auto gratis.',
-                'Día de charco garantizado, ponete los borcegos.'
+                'Lluvia como para quedarse en la cama todo el día con alguna excusa bajo el poncho.',
+                'Se viene agua, ideal para esa excusa de "no puedo salir, mejor quedate".',
+                'Día de lluvia de los que piden mate, peli y compañía calentita.',
+                'Agarrá el paraguas, o mejor, una excusa para no moverte de ahí.'
             ],
             frio: [
-                'Fresquito, sacá la campera y la bufanda.',
-                'Día para el mate calentito y no salir mucho.'
+                'Fresquito como para arrimarse "sin querer" al que tenés al lado.',
+                'Día de campera puesta y de buscar excusa para un abrazo.'
             ],
             calor: [
-                'Solcito pesado, mejor la sombra al mediodía.',
-                'Día para el ventilador prendido todo el día.'
+                'Solcito como para lucir lo que el invierno escondió.',
+                'Día de musculosa y de miradas que se cruzan más de la cuenta.'
             ],
             viento: [
-                'Corre un vientito que te despeina.',
-                'Aguantá el sombrero que hoy sopla.'
+                'Vientito que despeina, ideal para esa foto "natural" con filtro de por medio.',
+                'Corre una brisa como para tirar la previa en la terraza, con alguien al lado.'
             ],
             tranquilo: [
-                'Día de esos para no hacer nada y disfrutar.',
-                'Clima de terraza y asadito con los gurises.',
-                'Nada raro por hoy, tranqui total.'
+                'Día de esos para no hacer nada... en buena compañía.',
+                'Clima de siesta larga, con alguien al lado si se da.',
+                'Nada raro por hoy, así que aprovechá para lo que tenías pendiente... vos sabrás qué.'
             ]
         };
 
